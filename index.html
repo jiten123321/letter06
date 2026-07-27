@@ -103,12 +103,13 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
   position:relative;font-size:11px;letter-spacing:.32em;text-transform:uppercase;
   font-weight:500;margin-bottom:clamp(14px,3vh,26px);
 }
-.wordwrap{position:relative;display:block;line-height:.85}
+.wordwrap{position:relative;display:block;line-height:1.16}
 .word{
   font-family:var(--f-display);font-weight:300;
-  font-size:clamp(56px,min(20vw,23vh),230px);
-  font-variation-settings:"SOFT" 40,"WONK" 1;
-  letter-spacing:-.02em;display:block;
+  font-size:clamp(23px,4.4vw,42px);
+  font-variation-settings:"SOFT" 30,"WONK" 1;
+  letter-spacing:-.01em;line-height:1.16;display:block;
+  padding:0 max(20px,calc((100% - 640px)/2));
 }
 .word.his{position:absolute;inset:0;clip-path:inset(0 0 0 var(--seam));color:var(--his-ink)}
 .word.her{position:absolute;inset:0;color:var(--her-ink);clip-path:inset(0 calc(100% - var(--seam)) 0 0)}
@@ -303,13 +304,11 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
   <div class="glitter her" id="glitGate" aria-hidden="true"></div>
 
   <div class="gate-inner">
-    <div class="gate-eyebrow"><span style="color:var(--her-ink)">est. </span><span style="color:var(--his-ink)">whenever it started</span></div>
     <span class="wordwrap">
-      <span class="word base" aria-hidden="true">Dono</span>
-      <span class="word her" aria-hidden="true">Dono</span>
-      <span class="word his">Dono</span>
+      <span class="word base" aria-hidden="true">You made me smile with a song, so I thought I'd return the favour with flowers.</span>
+      <span class="word her" aria-hidden="true">You made me smile with a song, so I thought I'd return the favour with flowers.</span>
+      <span class="word his">You made me smile with a song, so I thought I'd return the favour with flowers.</span>
     </span>
-    <p class="gate-sub"><span class="h">two of everything,</span> <span class="s">one of us</span></p>
     <button class="enter" id="enterBtn">Enter</button>
     <p class="hint" id="gateHint">drag the line ↔ &nbsp;·&nbsp; then tap Enter</p>
   </div>
