@@ -6,7 +6,7 @@
 <title>Dono — a bunch of lilies</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&family=Karla:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&family=Karla:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 /* ============ tokens ============ */
 :root{
@@ -38,6 +38,7 @@
 
   --f-display:"Fraunces",Georgia,serif;
   --f-body:"Karla",system-ui,sans-serif;
+  --f-hand:"Caveat","Segoe Script",cursive;
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
@@ -277,16 +278,30 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 @keyframes pop{to{opacity:1}}
 .orb svg{width:38px;height:auto}
 .letter{
-  position:relative;z-index:5;background:rgba(252,250,247,.95);backdrop-filter:blur(8px);
-  border:1px solid var(--hair);border-radius:3px;max-width:560px;width:100%;
-  padding:clamp(28px,6vw,52px);box-shadow:0 30px 90px rgba(155,44,99,.16);
-  opacity:0;transition:opacity 1.2s ease;
+  --rule:34px;
+  position:relative;z-index:5;color:#33456e;
+  max-width:560px;width:100%;
+  background:
+    linear-gradient(90deg,transparent 0 52px,rgba(200,96,120,.5) 52px 53px,transparent 53px),
+    repeating-linear-gradient(to bottom,transparent 0 calc(var(--rule) - 1px),rgba(84,104,150,.16) calc(var(--rule) - 1px) var(--rule)),
+    linear-gradient(180deg,#FCF6E7 0%,#F5EBD4 100%);
+  border:1px solid #E4D9BE;border-radius:3px;
+  padding:34px 30px 30px 66px;
+  box-shadow:0 26px 70px rgba(60,45,25,.32),0 2px 6px rgba(60,45,25,.16);
+  transform:rotate(-.7deg);
+  opacity:0;transition:opacity 1.2s ease;overflow:hidden;
+}
+.letter::before{
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:-1;opacity:.4;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E");
 }
 .letter.on{opacity:1}
-.letter .to{font-family:var(--f-display);font-style:italic;font-size:clamp(26px,5.6vw,36px);color:var(--accent);margin-bottom:22px}
-.letter p{font-family:var(--f-display);font-size:clamp(15px,3.4vw,17px);line-height:1.95;margin-bottom:18px;min-height:1em}
-.letter .sign{font-family:var(--f-display);font-style:italic;font-size:clamp(16px,3.6vw,19px);
-  text-align:right;margin-top:28px;color:var(--accent)}
+.letter .to{font-family:var(--f-hand);font-weight:700;font-size:clamp(30px,6.4vw,40px);
+  line-height:var(--rule);color:#b03a63;margin-bottom:var(--rule)}
+.letter p{font-family:var(--f-hand);font-weight:500;font-size:clamp(20px,4.8vw,24px);
+  line-height:var(--rule);margin-bottom:var(--rule);min-height:1em;letter-spacing:.2px}
+.letter .sign{font-family:var(--f-hand);font-weight:600;font-size:clamp(21px,5vw,27px);
+  line-height:var(--rule);text-align:right;margin-top:var(--rule);color:#b03a63}
 .caret::after{content:"▍";color:var(--accent-soft);animation:blink 1s steps(1) infinite}
 @keyframes blink{50%{opacity:0}}
 .skip{position:fixed;bottom:20px;left:50%;translate:-50% 0;z-index:10;
@@ -465,7 +480,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
   <div class="stage">
     <div class="ring"><div class="ring-rot" id="ringRot"></div></div>
     <article class="letter" id="letter">
-      <div class="to">Ladoo,</div>
+      <div class="to">Arre Ladoo ❤️,</div>
       <div id="letterBody"></div>
       <div class="sign" id="letterSign"></div>
     </article>
@@ -562,14 +577,13 @@ $("#openBtn").addEventListener("click", openFinal);
 
 /* ---------- letter ---------- */
 const LETTER = [
- "This whole shop closed down. In the end it only ever had one thing worth giving, so here it is — a bunch of lilies, and nothing to buy.",
- "You drink coffee, I drink tea. You live on a screen, I live in a book. You say things plainly, I keep saying them to myself. In every single thing, we're opposites.",
- "And still.",
- "I know that when you're in a bad mood you don't say anything, you just go quiet. And I also know that in those moments you don't need to be reasoned with — you need to be fed. Two bites in, you laugh and say something on your own, as if nothing ever happened. It's the easiest magic in the world, and I love that only I know how to do it.",
- "Nothing here is really for sale. Everything costs one memory, and you paid that a long time ago.",
- "We don't match. We fit. There's a difference between the two."
+ "\"Ye sare flowers dene ka mann kar raha tha.\" 🌸",
+ "Phir socha ki best time kya ho sakta h? Ans: tum uthne se pehle aur mere idhar se nikalne se pehle tumhare liye kuch bana doon... Waise bhi mujhe abhi lagbhag 6 hours drive karni hai, toh dil ne bola ki jab tum uthogi tab mere message ke saath yeh dekhna... aur thoda sa smile karna.",
+ "Bas itna sa wish hai ki tumhara post-period phase mast nikle, tum jaldi se fresh feel karo, aur apni routine fir se track pe le aao. Apna dhyan rakhna, time pe khana khana, paani peena, aur thoda rest bhi karna. 😊",
+ "Aur haan... ab jab bhi woh song sununga na, mujhe sirf uski lyrics yaad nahi aayengi. Mujhe woh ladki yaad aayegi jisne mujhe sunko bola tha. That made the song a lot more special than it already was.",
+ "Chalo, main nikalta hoon..aur imagine karna ki yeh flowers main khud tumhare haath mein de raha hoon. 🌸❤️"
 ];
-const SIGN = "— your own";
+const SIGN = "For Dream Waali... from Khwab Waala. 🌸";
 
 const LILY_MINI =
  '<svg viewBox="-52 -92 104 104" fill="none" xmlns="http://www.w3.org/2000/svg">'
