@@ -225,14 +225,10 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 @keyframes enterpulse{0%{transform:scale(1);opacity:.55}70%{opacity:0}100%{transform:scale(1.4);opacity:0}}
 .hint{
   position:relative;align-self:start;margin-top:clamp(14px,3vh,26px);display:inline-block;
-  font-size:11px;letter-spacing:.12em;line-height:2;text-transform:uppercase;font-weight:700;
+  font-size:11px;letter-spacing:.12em;line-height:1.7;text-transform:uppercase;font-weight:700;
   max-width:min(90vw,540px);
-  color:var(--ink);opacity:1;padding:5px 12px 4px;border-radius:2px;
-  background:linear-gradient(180deg,transparent 0 14%,rgba(255,205,120,.9) 14% 90%,transparent 90%);
-  box-decoration-break:clone;-webkit-box-decoration-break:clone;
-  animation:hintpulse 1.9s ease-in-out infinite;
+  color:var(--ink);opacity:1;padding:5px 12px 4px;
 }
-@keyframes hintpulse{0%,100%{filter:brightness(1)}50%{filter:brightness(1.1)}}
 
 /* ============ story pages (reels) ============ */
 .page{
@@ -713,7 +709,6 @@ gate.addEventListener("pointerdown", e => {
   dragging = true;
   try{ gate.setPointerCapture(e.pointerId); }catch(err){}
   fromEvent(e);
-  $("#gateHint").style.opacity = ".15";
   hideFinger();
 });
 gate.addEventListener("pointermove", e => {
