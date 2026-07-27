@@ -150,7 +150,34 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .enter:hover{background:var(--card);letter-spacing:.3em}
 .hint{position:relative;margin-top:16px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;opacity:.5}
 
-/* ============ gift (page 2) ============ */
+/* ============ story pages (reels) ============ */
+.page{
+  display:none;position:relative;min-height:100vh;min-height:100svh;
+  overflow-x:hidden;overflow-y:auto;
+}
+.page.on{display:block;animation:pagein .6s ease}
+@keyframes pagein{from{opacity:0}to{opacity:1}}
+.reel.r1{background:linear-gradient(160deg,#F3ECF0 0%,#FBEFF5 52%,#EAD8E4 100%)}
+.reel.r2{background:linear-gradient(160deg,#F7E7EC 0%,#FBEFE9 52%,#F1D9C9 100%)}
+.reel.r3{background:linear-gradient(160deg,#F4E7DA 0%,#FBEFE2 52%,#EAD6C2 100%)}
+.page-inner{
+  position:relative;z-index:3;margin:0 auto;text-align:center;
+  padding:clamp(36px,7vh,80px) 22px;width:100%;max-width:640px;min-height:100svh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:clamp(14px,3vh,26px);
+}
+.reel-eyebrow{font-size:11px;letter-spacing:.34em;text-transform:uppercase;font-weight:600;color:var(--accent)}
+.frame{
+  width:100%;background:var(--card);padding:12px;border-radius:6px;
+  border:1px solid var(--hair);box-shadow:0 24px 60px rgba(155,44,99,.16);
+}
+.frame img{width:100%;height:auto;display:block;border-radius:3px}
+.reel-cap{
+  font-family:var(--f-display);font-style:italic;font-weight:300;
+  font-size:clamp(17px,3.8vw,23px);line-height:1.45;color:var(--her-ink);max-width:26ch;
+}
+
+/* ============ gift ============ */
 #gift{
   display:none;position:relative;min-height:100vh;min-height:100svh;
   overflow-x:hidden;overflow-y:auto;
@@ -264,8 +291,42 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
   </div>
 </section>
 
+<!-- ===================== STORY (reels) ===================== -->
+<section class="page reel r1" id="reel1">
+  <div class="page-inner">
+    <p class="reel-eyebrow">one</p>
+    <figure class="frame" style="max-width:380px">
+      <img src="tumblr_23a2066ed43d94d1820d008f60ab7cc2_9ba2201a_400.gif" alt="A couple curled up together on a couch">
+    </figure>
+    <p class="reel-cap">Some evenings we don't do anything at all. That's the whole plan, and it works.</p>
+    <button class="open next" data-target="reel2">next →</button>
+  </div>
+</section>
+
+<section class="page reel r2" id="reel2">
+  <div class="page-inner">
+    <p class="reel-eyebrow">two</p>
+    <figure class="frame" style="max-width:520px">
+      <img src="tumblr_6b21aaf7c31bbd58869edc6c4c8bf2ab_99c7eeb8_540.webp" alt="One person gently brushing the other's hair back">
+    </figure>
+    <p class="reel-cap">You go quiet, I stay close. Somehow that has always said more than talking.</p>
+    <button class="open next" data-target="reel3">next →</button>
+  </div>
+</section>
+
+<section class="page reel r3" id="reel3">
+  <div class="page-inner">
+    <p class="reel-eyebrow">three</p>
+    <figure class="frame" style="max-width:460px">
+      <img src="100%20(1).webp" alt="A couple holding each other in the rain">
+    </figure>
+    <p class="reel-cap">And when the rain starts, we don't run for cover. We just stay.</p>
+    <button class="open next" data-target="gift">for you →</button>
+  </div>
+</section>
+
 <!-- ===================== GIFT (bouquet) ===================== -->
-<main id="gift">
+<main id="gift" class="page">
   <div class="glitter" id="glitGift" aria-hidden="true"></div>
   <div class="gift-inner">
     <p class="gift-eyebrow">for you,</p>
@@ -434,15 +495,24 @@ grip.addEventListener("keydown", e => {
   if(e.key === "ArrowRight"){ setSeam(now + 3); e.preventDefault(); }
 });
 
-/* ---------- enter -> gift ---------- */
+/* ---------- page navigation (gate -> reels -> gift) ---------- */
+function goTo(id){
+  const t = document.getElementById(id);
+  if(!t) return;
+  document.querySelectorAll(".page.on").forEach(p => { if(p !== t) p.classList.remove("on"); });
+  t.classList.add("on");
+  try{ window.scrollTo(0,0); t.scrollTop = 0; }catch(err){}
+}
 $("#enterBtn").addEventListener("click", () => {
   gate.style.transition = "opacity .7s ease";
   gate.style.opacity = "0";
   setTimeout(() => {
     gate.style.display = "none";
-    $("#gift").classList.add("on");
-    try{ window.scrollTo(0,0); }catch(err){}
+    goTo("reel1");
   }, RM ? 0 : 700);
+});
+document.querySelectorAll(".next").forEach(b => {
+  b.addEventListener("click", () => goTo(b.dataset.target));
 });
 
 /* ---------- gift -> letter ---------- */
