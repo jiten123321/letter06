@@ -152,15 +152,17 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 
 /* ============ gift (page 2) ============ */
 #gift{
-  display:none;position:relative;min-height:100vh;min-height:100svh;overflow:hidden;
+  display:none;position:relative;min-height:100vh;min-height:100svh;
+  overflow-x:hidden;overflow-y:auto;
   background:linear-gradient(160deg,var(--blush) 0%,#FFF6FB 52%,var(--her-bg-2) 100%);
 }
-#gift.on{display:grid}
+#gift.on{display:block}
 #gift .glitter{z-index:1}
 .gift-inner{
-  position:relative;z-index:3;place-self:center;text-align:center;
-  padding:clamp(40px,8vh,90px) 22px;width:100%;max-width:640px;
-  display:flex;flex-direction:column;align-items:center;gap:clamp(10px,2.4vh,22px);
+  position:relative;z-index:3;margin:0 auto;text-align:center;
+  padding:clamp(40px,8vh,90px) 22px;width:100%;max-width:640px;min-height:100svh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:clamp(10px,2.4vh,22px);
 }
 .gift-eyebrow{
   font-family:var(--f-display);font-style:italic;font-weight:300;
