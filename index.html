@@ -80,6 +80,31 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
   100%{transform:translate3d(var(--drift,0),114vh,0) rotate(260deg);opacity:0}
 }
 
+/* ============ music notes (his side) ============ */
+.notes{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:2}
+.notes.his{clip-path:inset(0 0 0 var(--seam))}
+.note{position:absolute;bottom:-12%;opacity:0;will-change:transform,opacity;
+  animation:notefloat linear infinite}
+.note svg{width:var(--nw,18px);height:auto;display:block;opacity:.5}
+@keyframes notefloat{
+  0%{opacity:0;transform:translate3d(0,0,0) rotate(-6deg)}
+  14%{opacity:.5}
+  86%{opacity:.5}
+  100%{opacity:0;transform:translate3d(var(--nsway,0),-118vh,0) rotate(10deg)}
+}
+
+/* soft breathing spotlight behind the centre */
+.gate-glow{
+  position:absolute;left:50%;top:50%;width:72vmax;height:72vmax;
+  transform:translate(-50%,-50%);pointer-events:none;z-index:1;filter:blur(8px);
+  background:radial-gradient(circle,rgba(255,255,255,.22),transparent 60%);
+  animation:auroramove 11s ease-in-out infinite;
+}
+@keyframes auroramove{
+  0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.7}
+  50%{transform:translate(-50%,-53%) scale(1.12);opacity:1}
+}
+
 /* ============ gate ============ */
 #gate{
   position:relative;min-height:100vh;min-height:100svh;overflow:hidden;padding:28px 0;
@@ -132,6 +157,12 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
   background:linear-gradient(180deg,transparent,rgba(34,30,46,.5) 18%,rgba(34,30,46,.5) 82%,transparent);
   pointer-events:none;
 }
+.seam::before{
+  content:"";position:absolute;inset:0;left:-5px;width:11px;pointer-events:none;
+  background:linear-gradient(180deg,transparent,rgba(255,255,255,.6) 20%,rgba(255,255,255,.6) 80%,transparent);
+  filter:blur(4px);animation:seamglow 3.4s ease-in-out infinite;
+}
+@keyframes seamglow{0%,100%{opacity:.35}50%{opacity:.9}}
 .seam-grip{
   pointer-events:auto;
   position:absolute;top:66%;left:50%;translate:-50% -50%;
@@ -139,6 +170,11 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
   background:var(--card);border:1px solid rgba(34,30,46,.28);
   display:grid;place-items:center;cursor:ew-resize;
   box-shadow:0 4px 18px rgba(34,30,46,.16);
+  animation:grippulse 2.8s ease-in-out infinite;
+}
+@keyframes grippulse{
+  0%,100%{box-shadow:0 4px 18px rgba(34,30,46,.16),0 0 0 0 rgba(224,107,168,.5)}
+  50%{box-shadow:0 4px 18px rgba(34,30,46,.16),0 0 0 9px rgba(224,107,168,0)}
 }
 .seam-grip::before{content:"";width:9px;height:9px;border-left:1px solid var(--ink);border-top:1px solid var(--ink);
   rotate:-45deg;translate:2px 0;opacity:.65}
@@ -368,7 +404,9 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
   <div class="gate-face his"></div>
   <div class="gate-tex his"></div>
 
+  <div class="gate-glow" aria-hidden="true"></div>
   <div class="glitter her" id="glitGate" aria-hidden="true"></div>
+  <div class="notes his" id="noteGate" aria-hidden="true"></div>
 
   <div class="gate-inner">
     <span class="wordwrap">
@@ -562,6 +600,39 @@ function glitter(el, n){
   el.appendChild(frag);
 }
 glitter($("#glitGate"), RM ? 0 : 60);
+
+/* ---------- floating music notes (his side) ---------- */
+function noteSVG(beamed){
+  if(beamed){
+    return '<svg viewBox="0 0 34 34" xmlns="http://www.w3.org/2000/svg"><g fill="var(--his-line)">'
+      + '<ellipse cx="7" cy="27" rx="5.6" ry="4.2" transform="rotate(-22 7 27)"/>'
+      + '<ellipse cx="25" cy="24" rx="5.6" ry="4.2" transform="rotate(-22 25 24)"/>'
+      + '<rect x="11" y="6" width="2" height="21"/><rect x="29" y="3" width="2" height="21"/>'
+      + '<path d="M11 6 L31 3 L31 8 L11 11 Z"/></g></svg>';
+  }
+  return '<svg viewBox="0 0 24 34" xmlns="http://www.w3.org/2000/svg"><g fill="var(--his-line)">'
+    + '<ellipse cx="8" cy="27" rx="6" ry="4.4" transform="rotate(-22 8 27)"/>'
+    + '<rect x="12.2" y="7" width="2.2" height="20.5"/>'
+    + '<path d="M14.4 7 c7 2 8.5 7.5 4 12.5 c2.5-6.5 -1-10 -4-10.5 z"/></g></svg>';
+}
+function notes(el, n){
+  if(!el) return;
+  const frag = document.createDocumentFragment();
+  for(let i = 0; i < n; i++){
+    const d = document.createElement("span");
+    d.className = "note";
+    d.style.setProperty("--nw", (14 + Math.random() * 12).toFixed(1) + "px");
+    d.style.setProperty("--nsway", (((Math.random() * 2 - 1) * 50) | 0) + "px");
+    d.style.left = (30 + Math.random() * 68).toFixed(2) + "%";
+    const dur = 11 + Math.random() * 8;
+    d.style.animationDuration = dur.toFixed(2) + "s";
+    d.style.animationDelay = (-Math.random() * dur).toFixed(2) + "s";
+    d.innerHTML = noteSVG(i % 3 === 0);
+    frag.appendChild(d);
+  }
+  el.appendChild(frag);
+}
+notes($("#noteGate"), RM ? 0 : 12);
 
 /* ---------- gate seam ---------- */
 const gate = $("#gate"), grip = $("#grip");
