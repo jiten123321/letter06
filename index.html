@@ -176,6 +176,9 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
   font-family:var(--f-display);font-style:italic;font-weight:300;
   font-size:clamp(17px,3.8vw,23px);line-height:1.45;color:var(--her-ink);max-width:26ch;
 }
+.reel .next{padding:0;width:54px;height:54px;border-radius:50%;font-size:20px;
+  display:inline-flex;align-items:center;justify-content:center;letter-spacing:0}
+.reel .next:hover{letter-spacing:0}
 
 /* ============ gift ============ */
 #gift{
@@ -294,34 +297,28 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 <!-- ===================== STORY (reels) ===================== -->
 <section class="page reel r1" id="reel1">
   <div class="page-inner">
-    <p class="reel-eyebrow">one</p>
     <figure class="frame" style="max-width:380px">
       <img src="tumblr_23a2066ed43d94d1820d008f60ab7cc2_9ba2201a_400.gif" alt="A couple curled up together on a couch">
     </figure>
-    <p class="reel-cap">Some evenings we don't do anything at all. That's the whole plan, and it works.</p>
-    <button class="open next" data-target="reel2">next →</button>
+    <button class="open next" data-target="reel2" aria-label="Next">→</button>
   </div>
 </section>
 
 <section class="page reel r2" id="reel2">
   <div class="page-inner">
-    <p class="reel-eyebrow">two</p>
     <figure class="frame" style="max-width:520px">
       <img src="tumblr_6b21aaf7c31bbd58869edc6c4c8bf2ab_99c7eeb8_540.webp" alt="One person gently brushing the other's hair back">
     </figure>
-    <p class="reel-cap">You go quiet, I stay close. Somehow that has always said more than talking.</p>
-    <button class="open next" data-target="reel3">next →</button>
+    <button class="open next" data-target="reel3" aria-label="Next">→</button>
   </div>
 </section>
 
 <section class="page reel r3" id="reel3">
   <div class="page-inner">
-    <p class="reel-eyebrow">three</p>
     <figure class="frame" style="max-width:460px">
       <img src="100%20(1).webp" alt="A couple holding each other in the rain">
     </figure>
-    <p class="reel-cap">And when the rain starts, we don't run for cover. We just stay.</p>
-    <button class="open next" data-target="gift">for you →</button>
+    <button class="open next" data-target="gift" aria-label="Continue">→</button>
   </div>
 </section>
 
