@@ -331,14 +331,6 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 }
 #final.on{display:block}
 .stage{min-height:100vh;min-height:100svh;display:grid;place-items:center;padding:56px 18px;position:relative}
-.ring{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}
-.ring-rot{position:relative;width:1px;height:1px;animation:spin 90s linear infinite}
-@keyframes spin{to{rotate:360deg}}
-.orb{position:absolute;width:60px;height:60px;margin:-30px;border-radius:50%;
-  background:rgba(252,250,247,.7);border:1px solid var(--hair);display:grid;place-items:center;
-  opacity:0;animation:pop .8s cubic-bezier(.22,1,.36,1) forwards}
-@keyframes pop{to{opacity:1}}
-.orb svg{width:38px;height:auto}
 .letter{
   --rule:34px;
   position:relative;z-index:5;color:#26377d;
@@ -569,7 +561,6 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 <!-- ===================== FINAL ===================== -->
 <div id="final">
   <div class="stage">
-    <div class="ring"><div class="ring-rot" id="ringRot"></div></div>
     <article class="letter" id="letter">
       <span class="tape tape-l" aria-hidden="true"></span>
       <span class="tape tape-r" aria-hidden="true"></span>
@@ -767,36 +758,10 @@ const LETTER = [
 ];
 const SIGN = "For Dream Waali... from Khwab Waala. 🌸";
 
-const LILY_MINI =
- '<svg viewBox="-52 -92 104 104" fill="none" xmlns="http://www.w3.org/2000/svg">'
- + '<path class="petal" d="M0 4 C -14 -30 -9 -64 0 -82 C 9 -64 14 -30 0 4 Z"/>'
- + '<path class="petal" transform="rotate(60)"  d="M0 4 C -14 -30 -9 -64 0 -82 C 9 -64 14 -30 0 4 Z"/>'
- + '<path class="petal" transform="rotate(120)" d="M0 4 C -14 -30 -9 -64 0 -82 C 9 -64 14 -30 0 4 Z"/>'
- + '<path class="petal" transform="rotate(180)" d="M0 4 C -14 -30 -9 -64 0 -82 C 9 -64 14 -30 0 4 Z"/>'
- + '<path class="petal" transform="rotate(240)" d="M0 4 C -14 -30 -9 -64 0 -82 C 9 -64 14 -30 0 4 Z"/>'
- + '<path class="petal" transform="rotate(300)" d="M0 4 C -14 -30 -9 -64 0 -82 C 9 -64 14 -30 0 4 Z"/>'
- + '<ellipse class="anther" cx="0" cy="-38" rx="3" ry="5"/>'
- + '</svg>';
-
 function openFinal(){
   const f = $("#final");
   f.classList.add("on");
   document.body.style.overflow = "hidden";
-
-  const rot = $("#ringRot");
-  rot.innerHTML = "";
-  const N = 8;
-  const R = Math.max(150, Math.min(340, Math.min(innerWidth, innerHeight) * .42));
-  for(let i = 0; i < N; i++){
-    const a = (i / N) * Math.PI * 2 - Math.PI / 2;
-    const d = document.createElement("div");
-    d.className = "orb";
-    d.style.left = (Math.cos(a) * R) + "px";
-    d.style.top  = (Math.sin(a) * R) + "px";
-    d.style.animationDelay = (RM ? 0 : i * 0.09) + "s";
-    d.innerHTML = LILY_MINI;
-    rot.appendChild(d);
-  }
 
   setTimeout(() => { $("#letter").classList.add("on"); type(); }, RM ? 0 : 900);
 
