@@ -80,7 +80,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
   100%{transform:translate3d(var(--drift,0),114vh,0) rotate(260deg);opacity:0}
 }
 
-/* ============ music notes (his side) ============ */
+/* ============ tech elements (his side) ============ */
 .notes{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:2}
 .notes.his{clip-path:inset(0 0 0 var(--seam))}
 .note{position:absolute;bottom:-12%;opacity:0;will-change:transform,opacity;
@@ -601,19 +601,24 @@ function glitter(el, n){
 }
 glitter($("#glitGate"), RM ? 0 : 60);
 
-/* ---------- floating music notes (his side) ---------- */
-function noteSVG(beamed){
-  if(beamed){
-    return '<svg viewBox="0 0 34 34" xmlns="http://www.w3.org/2000/svg"><g fill="var(--his-line)">'
-      + '<ellipse cx="7" cy="27" rx="5.6" ry="4.2" transform="rotate(-22 7 27)"/>'
-      + '<ellipse cx="25" cy="24" rx="5.6" ry="4.2" transform="rotate(-22 25 24)"/>'
-      + '<rect x="11" y="6" width="2" height="21"/><rect x="29" y="3" width="2" height="21"/>'
-      + '<path d="M11 6 L31 3 L31 8 L11 11 Z"/></g></svg>';
+/* ---------- floating tech elements (his side) ---------- */
+function techSVG(i){
+  const S = 'stroke="var(--his-line)" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"';
+  const F = 'fill="var(--his-line)"';
+  switch(i % 6){
+    case 0: // </>
+      return '<svg viewBox="0 0 34 30" xmlns="http://www.w3.org/2000/svg" ' + S + '><path d="M11 7 L4 15 L11 23"/><path d="M23 7 L30 15 L23 23"/><path d="M19 5 L15 25"/></svg>';
+    case 1: // gear
+      return '<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" ' + S + '><circle cx="16" cy="16" r="6"/><circle cx="16" cy="16" r="2.3"/><path d="M16 4V8 M16 24V28 M4 16H8 M24 16H28 M7.5 7.5L10.3 10.3 M21.7 21.7L24.5 24.5 M24.5 7.5L21.7 10.3 M10.3 21.7L7.5 24.5"/></svg>';
+    case 2: // { }
+      return '<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" ' + S + '><path d="M13 5 C9 5 11 13 6 16 C11 19 9 27 13 27"/><path d="M19 5 C23 5 21 13 26 16 C21 19 23 27 19 27"/></svg>';
+    case 3: // binary
+      return '<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><text x="16" y="22" text-anchor="middle" font-family="monospace" font-size="16" font-weight="700" ' + F + '>10</text></svg>';
+    case 4: // >_
+      return '<svg viewBox="0 0 32 30" xmlns="http://www.w3.org/2000/svg" ' + S + '><path d="M8 9 L15 15 L8 21"/><path d="M17 22 L25 22"/></svg>';
+    default: // wifi
+      return '<svg viewBox="0 0 32 30" xmlns="http://www.w3.org/2000/svg" ' + S + '><path d="M5 12 a16 16 0 0 1 22 0"/><path d="M9 16.5 a10 10 0 0 1 14 0"/><path d="M12.5 21 a5 5 0 0 1 7 0"/><circle cx="16" cy="24.5" r="1.2" ' + F + ' stroke="none"/></svg>';
   }
-  return '<svg viewBox="0 0 24 34" xmlns="http://www.w3.org/2000/svg"><g fill="var(--his-line)">'
-    + '<ellipse cx="8" cy="27" rx="6" ry="4.4" transform="rotate(-22 8 27)"/>'
-    + '<rect x="12.2" y="7" width="2.2" height="20.5"/>'
-    + '<path d="M14.4 7 c7 2 8.5 7.5 4 12.5 c2.5-6.5 -1-10 -4-10.5 z"/></g></svg>';
 }
 function notes(el, n){
   if(!el) return;
@@ -621,13 +626,13 @@ function notes(el, n){
   for(let i = 0; i < n; i++){
     const d = document.createElement("span");
     d.className = "note";
-    d.style.setProperty("--nw", (14 + Math.random() * 12).toFixed(1) + "px");
+    d.style.setProperty("--nw", (16 + Math.random() * 12).toFixed(1) + "px");
     d.style.setProperty("--nsway", (((Math.random() * 2 - 1) * 50) | 0) + "px");
     d.style.left = (30 + Math.random() * 68).toFixed(2) + "%";
     const dur = 11 + Math.random() * 8;
     d.style.animationDuration = dur.toFixed(2) + "s";
     d.style.animationDelay = (-Math.random() * dur).toFixed(2) + "s";
-    d.innerHTML = noteSVG(i % 3 === 0);
+    d.innerHTML = techSVG(i);
     frag.appendChild(d);
   }
   el.appendChild(frag);
