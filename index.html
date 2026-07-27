@@ -142,9 +142,21 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
   letter-spacing:-.01em;line-height:1.16;display:block;
   padding:0 max(20px,calc((100% - 640px)/2));
 }
-.word.his{position:absolute;inset:0;clip-path:inset(0 0 0 var(--seam));color:var(--his-ink)}
-.word.her{position:absolute;inset:0;color:var(--her-ink);clip-path:inset(0 calc(100% - var(--seam)) 0 0)}
+.word.his{position:absolute;inset:0;clip-path:inset(0 0 0 var(--seam));color:var(--his-ink);
+  text-shadow:0 0 10px rgba(255,255,255,.5),0 0 24px rgba(220,220,235,.32);
+  animation:glowHis 4.4s ease-in-out infinite}
+.word.her{position:absolute;inset:0;color:var(--her-ink);clip-path:inset(0 calc(100% - var(--seam)) 0 0);
+  text-shadow:0 0 10px rgba(224,107,168,.55),0 0 24px rgba(255,158,207,.4);
+  animation:glowHer 4.4s ease-in-out infinite}
 .word.base{color:transparent}
+@keyframes glowHer{
+  0%,100%{text-shadow:0 0 8px rgba(224,107,168,.4),0 0 18px rgba(255,158,207,.26)}
+  50%{text-shadow:0 0 16px rgba(224,107,168,.72),0 0 34px rgba(255,158,207,.52)}
+}
+@keyframes glowHis{
+  0%,100%{text-shadow:0 0 8px rgba(255,255,255,.38),0 0 18px rgba(220,220,235,.22)}
+  50%{text-shadow:0 0 16px rgba(255,255,255,.62),0 0 34px rgba(220,220,235,.4)}
+}
 .word,.gate-face,.gate-tex,.gate-eyebrow,.gate-sub,.hint{pointer-events:none}
 .gate-sub{
   position:relative;margin-top:clamp(16px,3.5vh,32px);
