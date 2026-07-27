@@ -80,19 +80,6 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
   100%{transform:translate3d(var(--drift,0),114vh,0) rotate(260deg);opacity:0}
 }
 
-/* ============ floating petals ============ */
-.petals{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:2}
-.pet{position:absolute;bottom:-10%;opacity:0;will-change:transform,opacity;
-  animation:floatup linear infinite}
-.pet svg{width:var(--pw,14px);height:auto;display:block;
-  filter:drop-shadow(0 1px 2px rgba(120,60,90,.18))}
-@keyframes floatup{
-  0%{opacity:0;transform:translate3d(0,0,0) rotate(0)}
-  12%{opacity:.78}
-  88%{opacity:.78}
-  100%{opacity:0;transform:translate3d(var(--sway,0),-118vh,0) rotate(300deg)}
-}
-
 /* ============ gate ============ */
 #gate{
   position:relative;min-height:100vh;min-height:100svh;overflow:hidden;padding:28px 0;
@@ -382,7 +369,6 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
   <div class="gate-tex his"></div>
 
   <div class="glitter her" id="glitGate" aria-hidden="true"></div>
-  <div class="petals" id="petGate" aria-hidden="true"></div>
 
   <div class="gate-inner">
     <span class="wordwrap">
@@ -411,7 +397,6 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 
 <!-- ===================== STORY (reels) ===================== -->
 <section class="page reel r1" id="reel1">
-  <div class="petals" id="petReel1" aria-hidden="true"></div>
   <div class="page-inner">
     <figure class="frame" style="max-width:380px;--tilt:-1.6deg">
       <img src="tumblr_23a2066ed43d94d1820d008f60ab7cc2_9ba2201a_400.gif" alt="A couple curled up together on a couch">
@@ -421,7 +406,6 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 </section>
 
 <section class="page reel r2" id="reel2">
-  <div class="petals" id="petReel2" aria-hidden="true"></div>
   <div class="page-inner">
     <figure class="frame" style="max-width:520px;--tilt:1.3deg">
       <img src="tumblr_6b21aaf7c31bbd58869edc6c4c8bf2ab_99c7eeb8_540.webp" alt="One person gently brushing the other's hair back">
@@ -431,7 +415,6 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 </section>
 
 <section class="page reel r3" id="reel3">
-  <div class="petals" id="petReel3" aria-hidden="true"></div>
   <div class="page-inner">
     <figure class="frame" style="max-width:460px;--tilt:-1.1deg">
       <img src="100%20(1).webp" alt="A couple holding each other in the rain">
@@ -442,8 +425,6 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 
 <!-- ===================== GIFT (bouquet) ===================== -->
 <main id="gift" class="page">
-  <div class="glitter" id="glitGift" aria-hidden="true"></div>
-  <div class="petals" id="petGift" aria-hidden="true"></div>
   <div class="gift-inner">
     <p class="gift-eyebrow">for you,</p>
     <div class="bouquet">
@@ -539,7 +520,6 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 
 <!-- ===================== FINAL ===================== -->
 <div id="final">
-  <div class="petals" id="petFinal" aria-hidden="true"></div>
   <div class="stage">
     <div class="ring"><div class="ring-rot" id="ringRot"></div></div>
     <article class="letter" id="letter">
@@ -582,34 +562,6 @@ function glitter(el, n){
   el.appendChild(frag);
 }
 glitter($("#glitGate"), RM ? 0 : 60);
-glitter($("#glitGift"), RM ? 0 : 70);
-
-/* ---------- floating petals ---------- */
-const PETAL_COLS = ["rgba(255,176,212,.82)","rgba(224,107,168,.7)","rgba(255,255,255,.74)","rgba(233,162,190,.66)"];
-function petalSVG(col){
-  return '<svg viewBox="0 0 20 28" xmlns="http://www.w3.org/2000/svg">'
-    + '<path d="M10 0 C 3 8 3 20 10 28 C 17 20 17 8 10 0 Z" fill="' + col + '"/>'
-    + '<path d="M10 4 L10 24" stroke="rgba(255,255,255,.45)" stroke-width="1" fill="none"/></svg>';
-}
-function petals(el, n){
-  if(!el) return;
-  const frag = document.createDocumentFragment();
-  for(let i = 0; i < n; i++){
-    const d = document.createElement("span");
-    d.className = "pet";
-    d.style.setProperty("--pw", (10 + Math.random() * 12).toFixed(1) + "px");
-    d.style.setProperty("--sway", (((Math.random() * 2 - 1) * 60) | 0) + "px");
-    d.style.left = (Math.random() * 100).toFixed(2) + "%";
-    const dur = 9 + Math.random() * 8;
-    d.style.animationDuration = dur.toFixed(2) + "s";
-    d.style.animationDelay = (-Math.random() * dur).toFixed(2) + "s";
-    d.innerHTML = petalSVG(PETAL_COLS[(Math.random() * PETAL_COLS.length) | 0]);
-    frag.appendChild(d);
-  }
-  el.appendChild(frag);
-}
-petals($("#petGate"), RM ? 0 : 14);
-["#petReel1","#petReel2","#petReel3","#petGift","#petFinal"].forEach(id => petals($(id), RM ? 0 : 11));
 
 /* ---------- gate seam ---------- */
 const gate = $("#gate"), grip = $("#grip");
