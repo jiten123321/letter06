@@ -179,20 +179,9 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .seam-grip{
   pointer-events:auto;
   position:absolute;top:66%;left:50%;translate:-50% -50%;
-  width:34px;height:34px;border-radius:50%;
-  background:var(--card);border:1px solid rgba(34,30,46,.28);
-  display:grid;place-items:center;cursor:ew-resize;
-  box-shadow:0 4px 18px rgba(34,30,46,.16);
-  animation:grippulse 2.8s ease-in-out infinite;
+  width:40px;height:40px;border-radius:50%;
+  background:transparent;cursor:ew-resize;
 }
-@keyframes grippulse{
-  0%,100%{box-shadow:0 4px 18px rgba(34,30,46,.16),0 0 0 0 rgba(224,107,168,.5)}
-  50%{box-shadow:0 4px 18px rgba(34,30,46,.16),0 0 0 9px rgba(224,107,168,0)}
-}
-.seam-grip::before{content:"";width:9px;height:9px;border-left:1px solid var(--ink);border-top:1px solid var(--ink);
-  rotate:-45deg;translate:2px 0;opacity:.65}
-.seam-grip::after{content:"";position:absolute;width:9px;height:9px;border-right:1px solid var(--ink);border-top:1px solid var(--ink);
-  rotate:45deg;translate:-2px 0;opacity:.65}
 
 /* finger drag instruction */
 .finger-hint{
