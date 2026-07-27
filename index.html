@@ -175,7 +175,15 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
   transition:background .35s,letter-spacing .35s;
 }
 .enter:hover{background:var(--card);letter-spacing:.3em}
-.hint{position:relative;margin-top:16px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;opacity:.5}
+.hint{
+  position:relative;margin-top:18px;display:inline-block;
+  font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;
+  color:var(--ink);opacity:1;padding:5px 12px 4px;border-radius:2px;
+  background:linear-gradient(180deg,transparent 0 14%,rgba(255,205,120,.9) 14% 90%,transparent 90%);
+  box-decoration-break:clone;-webkit-box-decoration-break:clone;
+  animation:hintpulse 1.9s ease-in-out infinite;
+}
+@keyframes hintpulse{0%,100%{filter:brightness(1)}50%{filter:brightness(1.1)}}
 
 /* ============ story pages (reels) ============ */
 .page{
