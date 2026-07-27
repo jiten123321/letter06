@@ -139,6 +139,32 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .seam-grip::after{content:"";position:absolute;width:9px;height:9px;border-right:1px solid var(--ink);border-top:1px solid var(--ink);
   rotate:45deg;translate:-2px 0;opacity:.65}
 
+/* finger drag instruction */
+.finger-hint{
+  position:absolute;left:var(--seam);top:50%;z-index:5;pointer-events:none;
+  transform:translate(-50%,30px);transition:opacity .45s;
+}
+.finger-hint.gone{opacity:0}
+.finger-move{position:relative;display:grid;place-items:center;
+  animation:dragfinger 2.6s ease-in-out infinite}
+.hand{width:44px;height:44px;display:block;fill:var(--ink);
+  filter:drop-shadow(0 2px 3px rgba(252,250,247,.9)) drop-shadow(0 1px 2px rgba(0,0,0,.35))}
+.tap-ring{
+  position:absolute;top:6px;left:50%;width:34px;height:34px;margin-left:-17px;
+  border-radius:50%;border:2px solid var(--ink);opacity:0;
+  animation:taptouch 2.6s ease-in-out infinite;
+}
+@keyframes dragfinger{
+  0%,10%{transform:translateX(-48px)}
+  45%,55%{transform:translateX(48px)}
+  90%,100%{transform:translateX(-48px)}
+}
+@keyframes taptouch{
+  0%,10%{opacity:.5;transform:scale(.7)}
+  30%{opacity:0;transform:scale(1.5)}
+  100%{opacity:0;transform:scale(1.5)}
+}
+
 .enter{
   position:relative;z-index:6;pointer-events:auto;
   margin-top:clamp(26px,6vh,52px);
@@ -291,6 +317,15 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
   <div class="seam">
     <div class="seam-grip" id="grip" role="slider" tabindex="0"
          aria-label="Divide the two worlds" aria-valuemin="10" aria-valuemax="90" aria-valuenow="50"></div>
+  </div>
+
+  <div class="finger-hint" id="fingerHint" aria-hidden="true">
+    <div class="finger-move">
+      <span class="tap-ring"></span>
+      <svg class="hand" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M9 11.24V7.5C9 6.12 10.12 5 11.5 5S14 6.12 14 7.5v3.74c1.21-.81 2-2.18 2-3.74C16 5.01 13.99 3 11.5 3S7 5.01 7 7.5c0 1.56.79 2.93 2 3.74zm9.84 4.63l-4.54-2.26c-.17-.07-.35-.11-.54-.11H13v-6C13 6.67 12.33 6 11.5 6S10 6.67 10 7.5v10.74l-3.43-.72c-.08-.01-.15-.03-.24-.03-.31 0-.59.13-.79.33l-.79.8 4.94 4.94c.27.27.65.44 1.06.44h6.79c.75 0 1.33-.55 1.44-1.28l.75-5.27c.01-.07.02-.14.02-.2 0-.62-.38-1.16-.91-1.38z"/>
+      </svg>
+    </div>
   </div>
 </section>
 
@@ -474,22 +509,25 @@ function fromEvent(e){
   const r = gate.getBoundingClientRect();
   setSeam(((e.clientX - r.left) / r.width) * 100);
 }
+const fingerHint = $("#fingerHint");
+function hideFinger(){ if(fingerHint) fingerHint.classList.add("gone"); }
 gate.addEventListener("pointerdown", e => {
   if(e.target.closest(".enter")) return;
   dragging = true;
   try{ gate.setPointerCapture(e.pointerId); }catch(err){}
   fromEvent(e);
   $("#gateHint").style.opacity = ".15";
+  hideFinger();
 });
 gate.addEventListener("pointermove", e => {
-  if(dragging || e.pointerType === "mouse") fromEvent(e);
+  if(dragging || e.pointerType === "mouse"){ fromEvent(e); hideFinger(); }
 });
 gate.addEventListener("pointerup", () => dragging = false);
 gate.addEventListener("pointercancel", () => dragging = false);
 grip.addEventListener("keydown", e => {
   const now = parseFloat(grip.getAttribute("aria-valuenow"));
-  if(e.key === "ArrowLeft"){ setSeam(now - 3); e.preventDefault(); }
-  if(e.key === "ArrowRight"){ setSeam(now + 3); e.preventDefault(); }
+  if(e.key === "ArrowLeft"){ setSeam(now - 3); e.preventDefault(); hideFinger(); }
+  if(e.key === "ArrowRight"){ setSeam(now + 3); e.preventDefault(); hideFinger(); }
 });
 
 /* ---------- page navigation (gate -> reels -> gift) ---------- */
