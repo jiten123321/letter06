@@ -3,18 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Dono — a boutique that only sells pairs</title>
+<title>Dono — a bunch of lilies</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&family=Karla:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 /* ============ tokens ============ */
 :root{
-  /* her world — screen light */
-  --her-bg:#E4E9F7;
-  --her-bg-2:#CFD8F0;
-  --her-ink:#2E3A63;
-  --her-line:#7B8FD4;
+  /* her world — now pink */
+  --her-bg:#FCE3EF;
+  --her-bg-2:#F7C6E1;
+  --her-ink:#9B2C63;
+  --her-line:#E06BA8;
 
   /* his world — paper and chai */
   --his-bg:#F0E5D3;
@@ -22,22 +22,22 @@
   --his-ink:#453322;
   --his-line:#8C5A3C;
 
-  /* the boutique interior */
-  --room-cool:#EDEAF3;
-  --room-warm:#F4EADC;
+  --blush:#FBE7F1;
+  --warm:#F6EEDF;
   --card:#FCFAF7;
-  --ink:#221E2E;
-  --ink-soft:#645C74;
-  --hair:#D9D2CB;
-  --accent:#7A3B52;
-  --accent-soft:#B98098;
+  --ink:#2A1E27;
+  --ink-soft:#7A5E6E;
+  --hair:#EAD7E2;
+  --accent:#B23A72;
+  --accent-soft:#D98FB6;
+  --leaf:#8FA98C;
+  --gold:#E9A23B;
+  --stamen:#C9822E;
 
   --seam:50%;
-  --ring:150px;
 
   --f-display:"Fraunces",Georgia,serif;
   --f-body:"Karla",system-ui,sans-serif;
-  --f-deva:"Fraunces",Georgia,serif;
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
@@ -45,7 +45,7 @@ html{-webkit-text-size-adjust:100%}
 body{
   font-family:var(--f-body);
   color:var(--ink);
-  background:var(--room-cool);
+  background:var(--blush);
   overflow-x:hidden;
   -webkit-font-smoothing:antialiased;
 }
@@ -53,9 +53,30 @@ body{
 button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 
 .grain{
-  position:fixed;inset:0;pointer-events:none;z-index:900;opacity:.35;
+  position:fixed;inset:0;pointer-events:none;z-index:900;opacity:.32;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
   mix-blend-mode:multiply;
+}
+
+/* ============ glitter rain ============ */
+.glitter{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.glit{
+  position:absolute;top:-8%;width:var(--s,6px);height:var(--s,6px);
+  background:radial-gradient(circle at 50% 45%,#fff 0%,var(--col,#FF9ECF) 55%,transparent 72%);
+  border-radius:50%;opacity:0;
+  filter:drop-shadow(0 0 3px var(--col,#FF9ECF));
+  animation-name:fall;animation-timing-function:linear;animation-iteration-count:infinite;
+  will-change:transform,opacity;
+}
+.glit.star{
+  background:var(--col,#fff);border-radius:0;
+  clip-path:polygon(50% 0,60% 40%,100% 50%,60% 60%,50% 100%,40% 60%,0 50%,40% 40%);
+}
+@keyframes fall{
+  0%{transform:translate3d(0,0,0) rotate(0);opacity:0}
+  8%{opacity:1}
+  92%{opacity:1}
+  100%{transform:translate3d(var(--drift,0),114vh,0) rotate(260deg);opacity:0}
 }
 
 /* ============ gate ============ */
@@ -70,9 +91,12 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
   clip-path:inset(0 0 0 var(--seam))}
 
 .gate-tex{position:absolute;inset:0;opacity:.5}
-.gate-tex.her{background-image:repeating-linear-gradient(90deg,transparent 0 3px,rgba(123,143,212,.14) 3px 4px)}
+.gate-tex.her{background-image:repeating-linear-gradient(90deg,transparent 0 3px,rgba(224,107,168,.14) 3px 4px)}
 .gate-tex.his{clip-path:inset(0 0 0 var(--seam));
   background-image:repeating-linear-gradient(0deg,transparent 0 22px,rgba(140,90,60,.10) 22px 23px)}
+
+/* glitter rain confined to her (left) side, follows the seam */
+.glitter.her{z-index:2;clip-path:inset(0 calc(100% - var(--seam)) 0 0)}
 
 .gate-inner{position:relative;z-index:3;text-align:center;padding:0 20px;width:100%}
 .gate-eyebrow{
@@ -126,147 +150,81 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .enter:hover{background:var(--card);letter-spacing:.3em}
 .hint{position:relative;margin-top:16px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;opacity:.5}
 
-/* ============ boutique ============ */
-#shop{display:none;min-height:100vh;min-height:100svh;
-  background:linear-gradient(112deg,var(--room-cool) 0%,var(--room-warm) 100%)}
-#shop.on{display:block}
+/* ============ gift (page 2) ============ */
+#gift{
+  display:none;position:relative;min-height:100vh;min-height:100svh;overflow:hidden;
+  background:linear-gradient(160deg,var(--blush) 0%,#FFF6FB 52%,var(--her-bg-2) 100%);
+}
+#gift.on{display:grid}
+#gift .glitter{z-index:1}
+.gift-inner{
+  position:relative;z-index:3;place-self:center;text-align:center;
+  padding:clamp(40px,8vh,90px) 22px;width:100%;max-width:640px;
+  display:flex;flex-direction:column;align-items:center;gap:clamp(10px,2.4vh,22px);
+}
+.gift-eyebrow{
+  font-family:var(--f-display);font-style:italic;font-weight:300;
+  font-size:clamp(19px,4.6vw,26px);color:var(--accent);
+}
+.bouquet{position:relative;display:grid;place-items:center}
+.bouquet::before{
+  content:"";position:absolute;width:96%;height:96%;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,182,222,.55),transparent 68%);
+  filter:blur(10px);z-index:-1;
+}
+.bouquet svg{width:min(80vw,360px);height:auto;display:block}
+.petal{fill:rgba(240,150,196,.42);stroke:var(--her-line);stroke-width:1.7;stroke-linejoin:round}
+.fila{fill:none;stroke:var(--stamen);stroke-width:1.4;stroke-linecap:round}
+.anther{fill:var(--gold);stroke:none}
+.bud{fill:rgba(240,150,196,.5);stroke:var(--her-line);stroke-width:1.7;stroke-linejoin:round}
+.bud-seam{fill:none;stroke:var(--her-line);stroke-width:1;opacity:.55}
+.stem{fill:none;stroke:var(--leaf);stroke-width:2.4;stroke-linecap:round}
+.leaf{fill:rgba(143,169,140,.32);stroke:var(--leaf);stroke-width:1.6;stroke-linejoin:round}
+.leaf-mid{fill:none;stroke:var(--leaf);stroke-width:1;opacity:.7}
+.wrap{fill:rgba(251,231,241,.9);stroke:var(--her-line);stroke-width:1.7;stroke-linejoin:round}
+.wrap-fold{fill:none;stroke:var(--her-line);stroke-width:1;opacity:.5}
+.ribbon{fill:rgba(224,107,168,.25);stroke:var(--accent);stroke-width:1.5;stroke-linejoin:round}
+.ribbon-line{fill:none;stroke:var(--accent);stroke-width:1.5;stroke-linecap:round}
+.ribbon-knot{fill:var(--accent)}
+.gift-note{font-size:13px;line-height:1.7;color:var(--ink-soft);max-width:32ch}
+.open{
+  margin-top:6px;font-size:11px;letter-spacing:.24em;text-transform:uppercase;font-weight:600;
+  padding:15px 30px;border-radius:100px;background:var(--accent);color:#FCFAF7;
+  transition:background .3s,letter-spacing .3s;
+}
+.open:hover{background:var(--her-ink);letter-spacing:.28em}
 
-.top{
-  position:sticky;top:0;z-index:60;
-  display:flex;align-items:center;justify-content:space-between;gap:14px;
-  padding:16px clamp(18px,5vw,56px);
-  background:rgba(250,247,242,.82);backdrop-filter:blur(14px);
-  border-bottom:1px solid var(--hair);
-}
-.mark{font-family:var(--f-display);font-size:22px;font-weight:400;font-variation-settings:"WONK" 1;letter-spacing:-.01em}
-.mark span{color:var(--accent)}
-.top-right{display:flex;align-items:center;gap:8px}
-.chip{
-  font-size:10px;letter-spacing:.2em;text-transform:uppercase;font-weight:600;
-  padding:9px 15px;border:1px solid var(--hair);border-radius:100px;white-space:nowrap;
-  transition:border-color .3s,background .3s;
-}
-.chip:hover{border-color:var(--accent);background:rgba(122,59,82,.05)}
-.chip.hamper{border-color:rgba(34,30,46,.3)}
-.chip.hamper.full{background:var(--accent);color:#FCFAF7;border-color:var(--accent)}
-.chip[disabled]{opacity:.35;cursor:default}
-
-.intro{padding:clamp(46px,10vh,96px) clamp(18px,5vw,56px) clamp(26px,5vh,44px);max-width:760px}
-.intro h1{
-  font-family:var(--f-display);font-weight:300;font-variation-settings:"SOFT" 30,"WONK" 1;
-  font-size:clamp(32px,6.4vw,58px);line-height:1.06;letter-spacing:-.02em;
-}
-.intro h1 em{font-style:italic;color:var(--accent)}
-.intro p{margin-top:18px;font-size:clamp(14px,2.6vw,16px);line-height:1.7;color:var(--ink-soft);max-width:46ch}
-
-.shelf{
-  display:grid;gap:1px;background:var(--hair);
-  border-top:1px solid var(--hair);border-bottom:1px solid var(--hair);
-  grid-template-columns:1fr;
-}
-@media(min-width:620px){.shelf{grid-template-columns:1fr 1fr}}
-@media(min-width:1040px){.shelf{grid-template-columns:1fr 1fr 1fr}}
-
-.item{
-  background:var(--card);padding:26px 22px 22px;text-align:left;
-  display:flex;flex-direction:column;gap:14px;position:relative;
-  transition:background .4s;
-}
-.item:hover,.item:focus-visible{background:#fff}
-.item .art{width:100%;height:auto;display:block}
-.item .art .hers{transition:translate .5s cubic-bezier(.22,1,.36,1)}
-.item .art .his{transition:translate .5s cubic-bezier(.22,1,.36,1)}
-.item:hover .art .hers{translate:5px 0}
-.item:hover .art .his{translate:-5px 0}
-.pairlabel{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);font-weight:600}
-.pairlabel.deva{text-transform:none;letter-spacing:.08em;font-family:var(--f-deva);font-size:12px}
-.itemname{font-family:var(--f-display);font-size:19px;font-weight:400;line-height:1.25;font-variation-settings:"WONK" 1}
-.mine{
-  position:absolute;top:14px;right:16px;font-size:9px;letter-spacing:.18em;text-transform:uppercase;
-  color:var(--accent);opacity:0;transition:opacity .35s;font-weight:700;
-}
-.item.owned .mine{opacity:1}
-.item.owned{background:#fff}
-.item.owned .art{opacity:.55}
-
-.footnote{padding:clamp(34px,7vh,64px) clamp(18px,5vw,56px);text-align:center;
-  font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft)}
-
-/* ============ modal ============ */
-#modal{
-  position:fixed;inset:0;z-index:200;display:none;
-  align-items:flex-end;justify-content:center;
-  background:rgba(34,30,46,.42);backdrop-filter:blur(3px);
-}
-#modal.on{display:flex}
-@media(min-width:700px){#modal{align-items:center}}
-.sheet{
-  background:var(--card);width:100%;max-width:860px;max-height:92svh;overflow:auto;
-  border-radius:20px 20px 0 0;padding:26px 24px 30px;position:relative;
-  animation:rise .45s cubic-bezier(.22,1,.36,1);
-}
-@media(min-width:700px){.sheet{border-radius:6px;padding:40px;display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:center}}
-@keyframes rise{from{translate:0 40px;opacity:0}to{translate:0 0;opacity:1}}
-.sheet-art{background:linear-gradient(140deg,var(--room-cool),var(--room-warm));border-radius:4px;padding:18px}
-.sheet-art svg{width:100%;height:auto;display:block}
-.sheet-body{padding-top:20px}
-@media(min-width:700px){.sheet-body{padding-top:0}}
-.sheet-body h2{font-family:var(--f-display);font-weight:300;font-size:clamp(26px,5vw,38px);
-  line-height:1.08;letter-spacing:-.02em;margin:10px 0 16px;font-variation-settings:"SOFT" 30,"WONK" 1}
-.sheet-desc{font-family:var(--f-deva);font-size:16px;line-height:1.85;color:#3b3547}
-.price{margin-top:22px;padding-top:18px;border-top:1px solid var(--hair)}
-.price .lbl{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--ink-soft);font-weight:600}
-.price .val{font-family:var(--f-deva);font-size:17px;margin-top:7px;color:var(--accent)}
-.add{
-  margin-top:24px;width:100%;padding:16px;border-radius:100px;background:var(--ink);color:#FCFAF7;
-  font-size:11px;letter-spacing:.24em;text-transform:uppercase;font-weight:600;transition:background .3s;
-}
-.add:hover{background:var(--accent)}
-.add.owned{background:transparent;color:var(--ink-soft);border:1px solid var(--hair)}
-.x{position:absolute;top:14px;right:16px;width:34px;height:34px;border-radius:50%;
-  display:grid;place-items:center;font-size:19px;line-height:1;color:var(--ink-soft);z-index:2}
-.x:hover{background:rgba(34,30,46,.07)}
-
-/* ============ checkout ============ */
+/* ============ final letter (page 3) ============ */
 #final{
   position:fixed;inset:0;z-index:300;display:none;overflow:auto;
-  background:linear-gradient(150deg,var(--her-bg) 0%,#F2ECE6 48%,var(--his-bg) 100%);
+  background:linear-gradient(150deg,var(--her-bg) 0%,#FDF3F8 50%,var(--his-bg) 100%);
 }
 #final.on{display:block}
 .stage{min-height:100vh;min-height:100svh;display:grid;place-items:center;padding:56px 18px;position:relative}
 .ring{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}
 .ring-rot{position:relative;width:1px;height:1px;animation:spin 90s linear infinite}
 @keyframes spin{to{rotate:360deg}}
-.orb{position:absolute;width:64px;height:64px;margin:-32px;border-radius:50%;
-  background:rgba(252,250,247,.75);border:1px solid var(--hair);display:grid;place-items:center;
+.orb{position:absolute;width:60px;height:60px;margin:-30px;border-radius:50%;
+  background:rgba(252,250,247,.7);border:1px solid var(--hair);display:grid;place-items:center;
   opacity:0;animation:pop .8s cubic-bezier(.22,1,.36,1) forwards}
 @keyframes pop{to{opacity:1}}
-.orb svg{width:44px;height:auto}
+.orb svg{width:38px;height:auto}
 .letter{
   position:relative;z-index:5;background:rgba(252,250,247,.95);backdrop-filter:blur(8px);
   border:1px solid var(--hair);border-radius:3px;max-width:560px;width:100%;
-  padding:clamp(28px,6vw,52px);box-shadow:0 30px 90px rgba(34,30,46,.16);
+  padding:clamp(28px,6vw,52px);box-shadow:0 30px 90px rgba(155,44,99,.16);
   opacity:0;transition:opacity 1.2s ease;
 }
 .letter.on{opacity:1}
-.letter .to{font-family:var(--f-deva);font-size:clamp(24px,5.4vw,34px);color:var(--accent);margin-bottom:22px}
-.letter p{font-family:var(--f-deva);font-size:clamp(15px,3.4vw,17px);line-height:2;margin-bottom:18px;min-height:1em}
-.letter .sign{font-family:var(--f-deva);font-style:italic;font-size:clamp(16px,3.6vw,19px);
+.letter .to{font-family:var(--f-display);font-style:italic;font-size:clamp(26px,5.6vw,36px);color:var(--accent);margin-bottom:22px}
+.letter p{font-family:var(--f-display);font-size:clamp(15px,3.4vw,17px);line-height:1.95;margin-bottom:18px;min-height:1em}
+.letter .sign{font-family:var(--f-display);font-style:italic;font-size:clamp(16px,3.6vw,19px);
   text-align:right;margin-top:28px;color:var(--accent)}
 .caret::after{content:"▍";color:var(--accent-soft);animation:blink 1s steps(1) infinite}
 @keyframes blink{50%{opacity:0}}
 .skip{position:fixed;bottom:20px;left:50%;translate:-50% 0;z-index:10;
   font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-soft);
   padding:11px 20px;border:1px solid var(--hair);border-radius:100px;background:rgba(252,250,247,.9)}
-
-/* ============ toast ============ */
-#toast{
-  position:fixed;left:50%;bottom:26px;translate:-50% 20px;z-index:400;
-  background:var(--ink);color:#FCFAF7;padding:12px 22px;border-radius:100px;
-  font-size:11px;letter-spacing:.16em;text-transform:uppercase;
-  opacity:0;pointer-events:none;transition:opacity .35s,translate .35s;
-}
-#toast.on{opacity:1;translate:-50% 0}
 
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
@@ -284,6 +242,8 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
   <div class="gate-face his"></div>
   <div class="gate-tex his"></div>
 
+  <div class="glitter her" id="glitGate" aria-hidden="true"></div>
+
   <div class="gate-inner">
     <div class="gate-eyebrow"><span style="color:var(--her-ink)">est. </span><span style="color:var(--his-ink)">whenever it started</span></div>
     <span class="wordwrap">
@@ -292,7 +252,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
       <span class="word his">Dono</span>
     </span>
     <p class="gate-sub"><span class="h">two of everything,</span> <span class="s">one of us</span></p>
-    <button class="enter" id="enterBtn">Enter the boutique</button>
+    <button class="enter" id="enterBtn">Enter</button>
     <p class="hint" id="gateHint">drag the line ↔ &nbsp;·&nbsp; then tap Enter</p>
   </div>
 
@@ -302,43 +262,79 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
   </div>
 </section>
 
-<!-- ===================== SHOP ===================== -->
-<main id="shop">
-  <header class="top">
-    <div class="mark">Dono<span>.</span></div>
-    <div class="top-right">
-      <button class="chip" id="soundBtn">Sound off</button>
-      <button class="chip hamper" id="hamperBtn">0 / 8 in hamper</button>
+<!-- ===================== GIFT (bouquet) ===================== -->
+<main id="gift">
+  <div class="glitter" id="glitGift" aria-hidden="true"></div>
+  <div class="gift-inner">
+    <p class="gift-eyebrow">for you,</p>
+    <div class="bouquet">
+      <svg viewBox="0 0 320 400" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A bouquet of lilies">
+        <defs>
+          <g id="lilyShape">
+            <path class="petal" d="M0 4 C -14 -30 -9 -64 0 -82 C 9 -64 14 -30 0 4 Z"/>
+            <path class="petal" transform="rotate(60)"  d="M0 4 C -14 -30 -9 -64 0 -82 C 9 -64 14 -30 0 4 Z"/>
+            <path class="petal" transform="rotate(120)" d="M0 4 C -14 -30 -9 -64 0 -82 C 9 -64 14 -30 0 4 Z"/>
+            <path class="petal" transform="rotate(180)" d="M0 4 C -14 -30 -9 -64 0 -82 C 9 -64 14 -30 0 4 Z"/>
+            <path class="petal" transform="rotate(240)" d="M0 4 C -14 -30 -9 -64 0 -82 C 9 -64 14 -30 0 4 Z"/>
+            <path class="petal" transform="rotate(300)" d="M0 4 C -14 -30 -9 -64 0 -82 C 9 -64 14 -30 0 4 Z"/>
+            <path class="fila" d="M0 -2 L -12 -30"/>
+            <path class="fila" d="M0 -2 L 12 -30"/>
+            <path class="fila" d="M0 -2 L 0 -38"/>
+            <path class="fila" d="M0 -2 L -22 -20"/>
+            <path class="fila" d="M0 -2 L 22 -20"/>
+            <ellipse class="anther" cx="-13" cy="-33" rx="3.1" ry="5.2" transform="rotate(-20 -13 -33)"/>
+            <ellipse class="anther" cx="13"  cy="-33" rx="3.1" ry="5.2" transform="rotate(20 13 -33)"/>
+            <ellipse class="anther" cx="0"   cy="-41" rx="3.1" ry="5.2"/>
+            <ellipse class="anther" cx="-24" cy="-22" rx="2.9" ry="4.9" transform="rotate(-44 -24 -22)"/>
+            <ellipse class="anther" cx="24"  cy="-22" rx="2.9" ry="4.9" transform="rotate(44 24 -22)"/>
+          </g>
+          <g id="budShape">
+            <path class="bud" d="M0 6 C -13 -8 -13 -44 0 -62 C 13 -44 13 -8 0 6 Z"/>
+            <path class="bud-seam" d="M0 4 C -6 -14 -6 -40 0 -58"/>
+            <path class="bud-seam" d="M0 4 C 6 -14 6 -40 0 -58"/>
+          </g>
+        </defs>
+
+        <!-- leaves -->
+        <path class="leaf" d="M150 252 C 116 246 98 264 90 294 C 122 290 146 280 150 252 Z"/>
+        <path class="leaf-mid" d="M148 256 C 126 268 108 280 96 290"/>
+        <path class="leaf" d="M172 258 C 206 248 224 266 232 296 C 200 292 176 284 172 258 Z"/>
+        <path class="leaf-mid" d="M174 262 C 196 274 214 286 226 292"/>
+
+        <!-- stems -->
+        <path class="stem" d="M160 302 C 158 234 160 180 160 128"/>
+        <path class="stem" d="M160 302 C 146 254 116 208 112 168"/>
+        <path class="stem" d="M160 302 C 176 254 206 202 212 160"/>
+        <path class="stem" d="M160 302 C 192 252 228 158 240 108"/>
+        <path class="stem" d="M160 302 C 128 252 92 168 80 120"/>
+
+        <!-- wrap -->
+        <path class="wrap" d="M120 296 C 108 330 100 360 92 386 L 228 386 C 220 360 212 330 200 296 C 176 306 144 306 120 296 Z"/>
+        <path class="wrap-fold" d="M160 302 L 150 386"/>
+        <path class="wrap-fold" d="M160 302 L 126 378"/>
+        <path class="wrap-fold" d="M160 302 L 194 378"/>
+
+        <!-- buds -->
+        <use href="#budShape" transform="translate(240 108) rotate(24) scale(0.92)"/>
+        <use href="#budShape" transform="translate(80 120) rotate(-24) scale(0.92)"/>
+
+        <!-- open lilies -->
+        <use href="#lilyShape" transform="translate(112 168) scale(0.74) rotate(-16)"/>
+        <use href="#lilyShape" transform="translate(212 160) scale(0.78) rotate(16)"/>
+        <use href="#lilyShape" transform="translate(160 126) scale(1)"/>
+
+        <!-- ribbon -->
+        <path class="ribbon" d="M160 302 C 150 292 132 292 128 302 C 132 312 150 312 160 302 Z"/>
+        <path class="ribbon" d="M160 302 C 170 292 188 292 192 302 C 188 312 170 312 160 302 Z"/>
+        <circle class="ribbon-knot" cx="160" cy="302" r="4"/>
+        <path class="ribbon-line" d="M158 306 C 150 322 146 342 150 358"/>
+        <path class="ribbon-line" d="M162 306 C 170 322 174 342 170 358"/>
+      </svg>
     </div>
-  </header>
-
-  <section class="intro">
-    <h1>Everything here is sold <em>in pairs.</em></h1>
-    <p>Nothing in this shop works alone. Pick up all eight and the hamper opens.</p>
-  </section>
-
-  <div class="shelf" id="shelf"></div>
-
-  <p class="footnote">no returns · no exchanges · no other branch</p>
-</main>
-
-<!-- ===================== MODAL ===================== -->
-<div id="modal" role="dialog" aria-modal="true" aria-labelledby="mName">
-  <div class="sheet">
-    <button class="x" id="closeBtn" aria-label="Close">×</button>
-    <div class="sheet-art" id="mArt"></div>
-    <div class="sheet-body">
-      <div class="pairlabel deva" id="mPair"></div>
-      <h2 id="mName"></h2>
-      <div class="sheet-desc" id="mDesc"></div>
-      <div class="price">
-        <div class="lbl">Price</div>
-        <div class="val" id="mPrice"></div>
-      </div>
-      <button class="add" id="addBtn">Add to hamper</button>
-    </div>
+    <p class="gift-note">Lilies. No price, no pair to complete — just the whole bunch, already yours.</p>
+    <button class="open" id="openBtn">read the letter →</button>
   </div>
-</div>
+</main>
 
 <!-- ===================== FINAL ===================== -->
 <div id="final">
@@ -353,8 +349,6 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
   <button class="skip" id="skipBtn">show the whole letter</button>
 </div>
 
-<div id="toast"></div>
-
 <script>
 (function(){
 "use strict";
@@ -362,181 +356,33 @@ const $ = s => document.querySelector(s);
 let RM = false;
 try{ RM = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches); }catch(e){}
 
-/* ---------- art ---------- */
-const S = (inner) => `<svg viewBox="0 0 240 150" class="art" xmlns="http://www.w3.org/2000/svg" fill="none"
-  stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7">
-  <line x1="120" y1="18" x2="120" y2="132" stroke="#D9D2CB" stroke-dasharray="2 6"/>${inner}</svg>`;
-const H = 'stroke="var(--her-line)"', I = 'stroke="var(--his-line)"';
+/* ---------- glitter rain ---------- */
+const COLORS = ["#ffffff","#FFD98A","#FF9ECF","#F7C6E1","#FFE9F4"];
+function glitter(el, n){
+  if(!el) return;
+  const frag = document.createDocumentFragment();
+  for(let i = 0; i < n; i++){
+    const g = document.createElement("span");
+    const star = Math.random() < 0.45;
+    g.className = "glit" + (star ? " star" : "");
+    const s = (star ? 6 : 3) + Math.random() * 7;
+    g.style.setProperty("--s", s.toFixed(1) + "px");
+    g.style.setProperty("--col", COLORS[(Math.random() * COLORS.length) | 0]);
+    g.style.setProperty("--drift", (((Math.random() * 2 - 1) * 50) | 0) + "px");
+    g.style.left = (Math.random() * 100).toFixed(2) + "%";
+    const dur = 5 + Math.random() * 7;
+    g.style.animationDuration = dur.toFixed(2) + "s";
+    g.style.animationDelay = (-Math.random() * dur).toFixed(2) + "s";
+    frag.appendChild(g);
+  }
+  el.appendChild(frag);
+}
+glitter($("#glitGate"), RM ? 0 : 60);
+glitter($("#glitGift"), RM ? 0 : 70);
 
-const ART = {
-cups: S(`<g class="hers" ${H}>
-  <path d="M42 48h44l-5 54a8 8 0 0 1-8 7H55a8 8 0 0 1-8-7z"/>
-  <rect x="39" y="40" width="50" height="9" rx="3"/>
-  <rect x="46" y="66" width="36" height="19" rx="2"/>
-  <path d="M53 33c0-5 6-5 6-10M70 33c0-5 6-5 6-10"/></g>
- <g class="his" ${I}>
-  <path d="M156 62h40l-6 42a7 7 0 0 1-7 6h-14a7 7 0 0 1-7-6z"/>
-  <line x1="159" y1="80" x2="193" y2="80"/>
-  <path d="M164 50c0-6 6-6 6-12M182 50c0-6 6-6 6-12"/>
-  <path d="M148 116h56"/></g>`),
-
-screen: S(`<g class="hers" ${H}>
-  <rect x="56" y="26" width="48" height="88" rx="8"/>
-  <line x1="72" y1="34" x2="88" y2="34"/>
-  <line x1="65" y1="52" x2="95" y2="52"/><line x1="65" y1="62" x2="88" y2="62"/>
-  <line x1="65" y1="72" x2="95" y2="72"/><line x1="65" y1="82" x2="80" y2="82"/>
-  <circle cx="80" cy="99" r="6"/></g>
- <g class="his" ${I}>
-  <path d="M136 46c14-8 24-8 34 0v54c-10-8-20-8-34 0z"/>
-  <path d="M204 46c-14-8-24-8-34 0v54c10-8 20-8 34 0z"/>
-  <line x1="170" y1="46" x2="170" y2="100"/>
-  <line x1="144" y1="60" x2="162" y2="56"/><line x1="144" y1="70" x2="162" y2="66"/>
-  <line x1="178" y1="56" x2="196" y2="60"/><line x1="178" y1="66" x2="196" y2="70"/></g>`),
-
-dream: S(`<g class="hers" ${H}>
-  <path d="M44 92a15 15 0 0 1 3-29 21 21 0 0 1 39-4 14 14 0 0 1 2 33z"/>
-  <path d="M60 34l2-6 2 6 6 2-6 2-2 6-2-6-6-2z"/>
-  <path d="M86 26l1.5-4 1.5 4 4 1.5-4 1.5-1.5 4-1.5-4-4-1.5z"/></g>
- <g class="his" ${I}>
-  <path d="M154 92a15 15 0 0 1 3-29 21 21 0 0 1 39-4 14 14 0 0 1 2 33z"/>
-  <path d="M186 34a11 11 0 1 0-11-13 9 9 0 0 1 11 13z"/></g>`),
-
-kaajal: S(`<g class="hers" ${H}>
-  <path d="M46 104l8-8 34-34 9 9-34 34z"/>
-  <path d="M88 62l9 9 6-6a6.4 6.4 0 0 0-9-9z"/>
-  <path d="M46 104l3-11 8 8z"/>
-  <path d="M52 46c8-9 24-9 32 0-8 9-24 9-32 0z"/>
-  <circle cx="68" cy="46" r="4"/><path d="M84 46l9-4"/></g>
- <g class="his" ${I}>
-  <line x1="140" y1="96" x2="208" y2="96"/>
-  <path d="M156 96a18 18 0 0 1 36 0"/>
-  <path d="M148 82l-6-4M200 82l6-4M174 70v-8"/>
-  <path d="M150 46c3-3 6 0 9-3M186 38c3-3 6 0 9-3"/></g>`),
-
-voice: S(`<g class="hers" ${H}>
-  <path d="M40 34h64a8 8 0 0 1 8 8v40a8 8 0 0 1-8 8H70l-18 16v-16h-12a8 8 0 0 1-8-8V42a8 8 0 0 1 8-8z"/>
-  <line x1="54" y1="52" x2="98" y2="52"/><line x1="54" y1="64" x2="86" y2="64"/></g>
- <g class="his" ${I}>
-  <path d="M154 66h40a7 7 0 0 1 7 7v20a7 7 0 0 1-7 7h-22l-12 10v-10h-6a7 7 0 0 1-7-7V73a7 7 0 0 1 7-7z"/>
-  <circle cx="166" cy="83" r="1.6" fill="var(--his-line)"/>
-  <circle cx="174" cy="83" r="1.6" fill="var(--his-line)"/>
-  <circle cx="182" cy="83" r="1.6" fill="var(--his-line)"/></g>`),
-
-jeet: S(`<g class="hers" ${H}>
-  <path d="M56 30h36v18a18 18 0 0 1-36 0z"/>
-  <path d="M56 34H44a10 10 0 0 0 12 12M92 34h12a10 10 0 0 1-12 12"/>
-  <line x1="74" y1="66" x2="74" y2="84"/>
-  <path d="M60 100h28l-4-16H64z"/><line x1="54" y1="100" x2="94" y2="100"/></g>
- <g class="his" ${I}>
-  <line x1="160" y1="30" x2="160" y2="108"/>
-  <path d="M160 34h42l-9 13 9 13h-42z"/>
-  <path d="M176 44c-3-4-9-1-9 3 0 4 6 7 9 10 3-3 9-6 9-10 0-4-6-7-9-3z"/>
-  <line x1="150" y1="108" x2="172" y2="108"/></g>`),
-
-meme: S(`<g class="hers" ${H}>
-  <rect x="50" y="24" width="50" height="88" rx="8"/>
-  <circle cx="66" cy="58" r="2.4" fill="var(--her-line)"/>
-  <circle cx="84" cy="58" r="2.4" fill="var(--her-line)"/>
-  <path d="M64 74c4 7 18 7 22 0"/>
-  <path d="M100 88l14 6-14 6"/>
-  <text x="75" y="105" text-anchor="middle" font-family="Karla,sans-serif" font-size="8"
-    fill="var(--her-line)" stroke="none" letter-spacing="1">2:14</text></g>
- <g class="his" ${I}>
-  <rect x="146" y="24" width="50" height="88" rx="8"/>
-  <path d="M158 52h26M158 62h20M158 72h24"/>
-  <path d="M171 96c-3-4-9-1-9 3.5 0 4.5 6 7.5 9 10.5 3-3 9-6 9-10.5 0-4.5-6-7.5-9-3.5"/>
-  <path d="M200 40l7-4M202 52h8M200 64l7 4"/></g>`),
-
-mood: S(`<g class="hers" ${H}>
-  <ellipse cx="72" cy="82" rx="42" ry="16"/>
-  <ellipse cx="72" cy="76" rx="42" ry="16"/>
-  <circle cx="56" cy="70" r="11"/><path d="M48 68c5 4 11 4 16 0"/>
-  <ellipse cx="88" cy="72" rx="13" ry="7"/>
-  <path d="M80 72c3-4 13-4 16 0"/>
-  <path d="M62 52c0-5 5-5 5-10M84 50c0-5 5-5 5-10"/></g>
- <g class="his" ${I}>
-  <path d="M144 60l10 20 10-6 10 22 12-38 12 12"/>
-  <circle cx="198" cy="70" r="3.2" fill="var(--his-line)"/>
-  <line x1="140" y1="98" x2="206" y2="98"/>
-  <path d="M152 116c10 10 32 10 42 0" stroke-width="2"/>
-  <circle cx="160" cy="108" r="1.8" fill="var(--his-line)"/>
-  <circle cx="186" cy="108" r="1.8" fill="var(--his-line)"/></g>`),
-
-ladoo: S(`<g class="hers" ${H}>
-  <circle cx="74" cy="72" r="28"/>
-  <circle cx="64" cy="64" r="2" fill="var(--her-line)"/><circle cx="82" cy="62" r="2" fill="var(--her-line)"/>
-  <circle cx="72" cy="76" r="2" fill="var(--her-line)"/><circle cx="86" cy="80" r="2" fill="var(--her-line)"/>
-  <circle cx="60" cy="80" r="2" fill="var(--her-line)"/>
-  <path d="M46 104h56M52 104l4-6h36l4 6"/></g>
- <g class="his" ${I}>
-  <path d="M150 96c0-24 20-42 44-42" stroke-dasharray="3 5"/>
-  <path d="M186 44l3-8 3 8 8 3-8 3-3 8-3-8-8-3z"/>
-  <text x="172" y="118" text-anchor="middle" font-family="Fraunces,serif" font-size="13"
-    font-style="italic" fill="var(--his-line)" stroke="none">not for sale</text></g>`)
-};
-
-/* ---------- catalogue ---------- */
-const ITEMS = [
- {id:"cups", art:"cups", pair:"coffee / tea", name:"Cup No. 1 & No. 2",
-  desc:"Two different worlds on the same tray. You drink cold coffee and swear it's still hot; I let hot tea go cold and drink it two hours later. We're both wrong — just in different ways.",
-  price:"One old argument, still not settled."},
-
- {id:"screen", art:"screen", pair:"reels / pages", name:"The Screen & The Spine",
-  desc:"You scroll, I turn pages. Both do the same job — keep us up till two in the morning, then let us say we couldn't sleep.",
-  price:"One night we both stayed awake."},
-
- {id:"dream", art:"dream", pair:"dream / reverie", name:"Dream & Reverie",
-  desc:"One cloud, two different skies. Yours has the stars, mine has the moon. The trouble is you can't see them both at once — yet they belong to the same night.",
-  price:"One sleep, two different dreams."},
-
- {id:"kaajal", art:"kaajal", pair:"kohl / dusk", name:"Kohl & Dusk",
-  desc:"When you rub your eyes it turns to evening; when you line them with kohl it turns to night. I gave up watching the clock long ago.",
-  price:"One evening that always fades too soon."},
-
- {id:"voice", art:"voice", pair:"spoken / unspoken", name:"Loud & Whisper",
-  desc:"Whatever you think, you say. Whatever I think, I write down and never send. That's why in every fight you're always quick and I'm always late.",
-  price:"One thing I couldn't say in time."},
-
- {id:"jeet", art:"jeet", pair:"victory / surrender", name:"Victory & Surrender",
-  desc:"You fight to win. I only fight to end the fight. Honestly, I don't mind losing — as long as you laugh afterwards.",
-  price:"One fight you won, and so did I."},
-
- {id:"meme", art:"meme", pair:"sent / seen", name:"The 2 A.M. Meme",
-  desc:"You don't say anything, you just send a meme. I know exactly what it means. It's our own language — you won't find it in any dictionary.",
-  price:"One message, at two in the morning."},
-
- {id:"mood", art:"mood", pair:"plate / smile", name:"The Mood Fixer",
-  desc:"There's only one cure for your bad mood, and it isn't talking. Just feed you — two bites in, everything's fine. The whole world will keep trying to reason with you; I'll just fix you a plate.",
-  price:"One plate. That's all it takes."}
-];
-
-const SECRET = {id:"ladoo", art:"ladoo", pair:"already taken / never for sale", name:"Ladoo",
-  desc:"It's kept in the shop, but not on any shelf. It isn't for sale. It already belongs to someone.",
-  price:"Not for sale."};
-
-/* ---------- letter ---------- */
-const LETTER = [
- "This whole shop was built to say just one thing.",
- "You drink coffee, I drink tea. You live on a screen, I live in a book. You say things plainly, I keep saying them to myself. In every single thing, we're opposites.",
- "And still.",
- "I know that when you're in a bad mood you don't say anything, you just go quiet. And I also know that in those moments you don't need to be reasoned with — you need to be fed. Two bites in, you laugh and say something on your own, as if nothing ever happened. It's the easiest magic in the world, and I love that only I know how to do it.",
- "Nothing here is really for sale. Everything costs one memory, and you paid that a long time ago.",
- "We don't match. We fit. There's a difference between the two."
-];
-const SIGN = "— your own";
-
-/* ---------- state ---------- */
-const KEY = "dono.hamper.v1";
-let owned = new Set();
-try{ const r = localStorage.getItem(KEY); if(r) owned = new Set(JSON.parse(r)); }catch(e){}
-const save = () => { try{ localStorage.setItem(KEY, JSON.stringify([...owned])); }catch(e){} };
-const inShelf = id => ITEMS.some(i => i.id === id);
-const count = () => [...owned].filter(inShelf).length;
-
-/* ---------- gate ---------- */
+/* ---------- gate seam ---------- */
 const gate = $("#gate"), grip = $("#grip");
-let dragging = false, secretFound = owned.has("ladoo");
-
+let dragging = false;
 function setSeam(pct){
   pct = Math.max(10, Math.min(90, pct));
   document.documentElement.style.setProperty("--seam", pct + "%");
@@ -564,123 +410,42 @@ grip.addEventListener("keydown", e => {
   if(e.key === "ArrowRight"){ setSeam(now + 3); e.preventDefault(); }
 });
 
+/* ---------- enter -> gift ---------- */
 $("#enterBtn").addEventListener("click", () => {
   gate.style.transition = "opacity .7s ease";
   gate.style.opacity = "0";
   setTimeout(() => {
     gate.style.display = "none";
-    $("#shop").classList.add("on");
+    $("#gift").classList.add("on");
     try{ window.scrollTo(0,0); }catch(err){}
   }, RM ? 0 : 700);
-  startAudio();
 });
 
-/* ---------- shelf ---------- */
-const shelf = $("#shelf");
-function render(){
-  const list = secretFound ? ITEMS.concat([SECRET]) : ITEMS;
-  shelf.innerHTML = list.map(it => `
-    <button class="item ${owned.has(it.id) ? "owned" : ""}" data-id="${it.id}">
-      <span class="mine">in hamper</span>
-      ${ART[it.art]}
-      <span class="pairlabel deva">${it.pair}</span>
-      <span class="itemname">${it.name}</span>
-    </button>`).join("");
-  const n = count();
-  const hb = $("#hamperBtn");
-  hb.classList.toggle("full", n === ITEMS.length);
-  hb.textContent = n === ITEMS.length
-    ? "Open the hamper →"
-    : `${n} / ${ITEMS.length} in hamper`;
-}
-shelf.addEventListener("click", e => {
-  const b = e.target.closest(".item");
-  if(b) openModal(b.dataset.id);
-});
+/* ---------- gift -> letter ---------- */
+$("#openBtn").addEventListener("click", openFinal);
 
-/* ---------- modal ---------- */
-const modal = $("#modal");
-let current = null, lastFocus = null;
+/* ---------- letter ---------- */
+const LETTER = [
+ "This whole shop closed down. In the end it only ever had one thing worth giving, so here it is — a bunch of lilies, and nothing to buy.",
+ "You drink coffee, I drink tea. You live on a screen, I live in a book. You say things plainly, I keep saying them to myself. In every single thing, we're opposites.",
+ "And still.",
+ "I know that when you're in a bad mood you don't say anything, you just go quiet. And I also know that in those moments you don't need to be reasoned with — you need to be fed. Two bites in, you laugh and say something on your own, as if nothing ever happened. It's the easiest magic in the world, and I love that only I know how to do it.",
+ "Nothing here is really for sale. Everything costs one memory, and you paid that a long time ago.",
+ "We don't match. We fit. There's a difference between the two."
+];
+const SIGN = "— your own";
 
-function findItem(id){ return ITEMS.concat([SECRET]).find(i => i.id === id); }
+const LILY_MINI =
+ '<svg viewBox="-52 -92 104 104" fill="none" xmlns="http://www.w3.org/2000/svg">'
+ + '<path class="petal" d="M0 4 C -14 -30 -9 -64 0 -82 C 9 -64 14 -30 0 4 Z"/>'
+ + '<path class="petal" transform="rotate(60)"  d="M0 4 C -14 -30 -9 -64 0 -82 C 9 -64 14 -30 0 4 Z"/>'
+ + '<path class="petal" transform="rotate(120)" d="M0 4 C -14 -30 -9 -64 0 -82 C 9 -64 14 -30 0 4 Z"/>'
+ + '<path class="petal" transform="rotate(180)" d="M0 4 C -14 -30 -9 -64 0 -82 C 9 -64 14 -30 0 4 Z"/>'
+ + '<path class="petal" transform="rotate(240)" d="M0 4 C -14 -30 -9 -64 0 -82 C 9 -64 14 -30 0 4 Z"/>'
+ + '<path class="petal" transform="rotate(300)" d="M0 4 C -14 -30 -9 -64 0 -82 C 9 -64 14 -30 0 4 Z"/>'
+ + '<ellipse class="anther" cx="0" cy="-38" rx="3" ry="5"/>'
+ + '</svg>';
 
-function openModal(id){
-  const it = findItem(id); if(!it) return;
-  current = it; lastFocus = document.activeElement;
-  $("#mArt").innerHTML = ART[it.art];
-  $("#mPair").textContent = it.pair;
-  $("#mName").textContent = it.name;
-  $("#mDesc").textContent = it.desc;
-  $("#mPrice").textContent = it.price;
-  syncAdd();
-  modal.classList.add("on");
-  document.body.style.overflow = "hidden";
-  $("#closeBtn").focus();
-}
-function closeModal(){
-  modal.classList.remove("on");
-  document.body.style.overflow = "";
-  if(lastFocus) lastFocus.focus();
-}
-function syncAdd(){
-  const b = $("#addBtn"), has = owned.has(current.id);
-  if(current.id === "ladoo"){
-    b.textContent = "Not for sale";
-    b.classList.add("owned"); b.disabled = true; return;
-  }
-  b.disabled = false;
-  b.textContent = has ? "Remove from hamper" : "Add to hamper";
-  b.classList.toggle("owned", has);
-}
-$("#addBtn").addEventListener("click", () => {
-  if(!current || current.id === "ladoo") return;
-  if(owned.has(current.id)){ owned.delete(current.id); }
-  else { owned.add(current.id); pluck(); }
-  save(); syncAdd(); render();
-  if(count() === ITEMS.length) toast("hamper is full — open it");
-});
-$("#closeBtn").addEventListener("click", closeModal);
-modal.addEventListener("click", e => { if(e.target === modal) closeModal(); });
-document.addEventListener("keydown", e => {
-  if(e.key === "Escape" && modal.classList.contains("on")) closeModal();
-});
-
-/* ---------- hamper ---------- */
-$("#hamperBtn").addEventListener("click", () => {
-  const n = count();
-  if(n < ITEMS.length){
-    toast(`${ITEMS.length - n} more to go`);
-    return;
-  }
-  openFinal();
-});
-
-/* ---------- secret word ---------- */
-let typed = "";
-document.addEventListener("keydown", e => {
-  if(e.key.length !== 1 || modal.classList.contains("on")) return;
-  typed = (typed + e.key.toLowerCase()).slice(-8);
-  if(!secretFound && (typed.includes("ladoo") || typed.includes("laddu"))){
-    secretFound = true; owned.add("ladoo"); save(); render();
-    toast("something was hidden in the back");
-    pluck(); setTimeout(pluck, 220);
-    setTimeout(() => {
-      const el = shelf.querySelector('[data-id="ladoo"]');
-      try{ if(el) el.scrollIntoView({behavior: RM ? "auto" : "smooth", block:"center"}); }catch(err){}
-    }, 400);
-  }
-});
-
-/* ---------- toast ---------- */
-let tTimer;
-function toast(msg){
-  const t = $("#toast");
-  t.textContent = msg; t.classList.add("on");
-  clearTimeout(tTimer);
-  tTimer = setTimeout(() => t.classList.remove("on"), 2600);
-}
-
-/* ---------- final ---------- */
 function openFinal(){
   const f = $("#final");
   f.classList.add("on");
@@ -688,24 +453,24 @@ function openFinal(){
 
   const rot = $("#ringRot");
   rot.innerHTML = "";
-  const R = Math.max(140, Math.min(330, Math.min(innerWidth, innerHeight) * .40));
-  ITEMS.forEach((it, i) => {
-    const a = (i / ITEMS.length) * Math.PI * 2 - Math.PI / 2;
+  const N = 8;
+  const R = Math.max(150, Math.min(340, Math.min(innerWidth, innerHeight) * .42));
+  for(let i = 0; i < N; i++){
+    const a = (i / N) * Math.PI * 2 - Math.PI / 2;
     const d = document.createElement("div");
     d.className = "orb";
     d.style.left = (Math.cos(a) * R) + "px";
     d.style.top  = (Math.sin(a) * R) + "px";
     d.style.animationDelay = (RM ? 0 : i * 0.09) + "s";
-    d.innerHTML = ART[it.art].replace('viewBox="0 0 240 150"','viewBox="30 18 180 114"');
+    d.innerHTML = LILY_MINI;
     rot.appendChild(d);
-  });
+  }
 
-  chord();
-  setTimeout(() => { $("#letter").classList.add("on"); type(); }, RM ? 0 : 1000);
+  setTimeout(() => { $("#letter").classList.add("on"); type(); }, RM ? 0 : 900);
 }
 
-const body = $("#letterBody"), signEl = $("#letterSign");
-let typing = false, done = false;
+const bodyEl = $("#letterBody"), signEl = $("#letterSign");
+let typing = false;
 
 function graphemes(str){
   if(typeof Intl !== "undefined" && Intl.Segmenter){
@@ -714,20 +479,21 @@ function graphemes(str){
   return Array.from(str);
 }
 function showAll(){
-  typing = false; done = true;
-  body.innerHTML = LETTER.map(p => `<p>${p}</p>`).join("");
+  typing = false;
+  bodyEl.innerHTML = LETTER.map(p => `<p>${p}</p>`).join("");
   signEl.textContent = SIGN;
   $("#skipBtn").style.display = "none";
 }
+const sleep = ms => new Promise(r => setTimeout(r, ms));
 async function type(){
   if(RM){ showAll(); return; }
   typing = true;
-  body.innerHTML = "";
+  bodyEl.innerHTML = "";
   for(const para of LETTER){
     if(!typing) return;
     const p = document.createElement("p");
     p.className = "caret";
-    body.appendChild(p);
+    bodyEl.appendChild(p);
     for(const g of graphemes(para)){
       if(!typing) return;
       p.textContent += g;
@@ -737,83 +503,12 @@ async function type(){
     await sleep(420);
   }
   if(!typing) return;
-  await sleep(500);
+  await sleep(400);
   signEl.textContent = SIGN;
   $("#skipBtn").style.display = "none";
-  done = true; typing = false;
+  typing = false;
 }
-const sleep = ms => new Promise(r => setTimeout(r, ms));
 $("#skipBtn").addEventListener("click", showAll);
-
-/* ---------- audio ---------- */
-let ctx = null, master = null, on = false;
-const NOTES = [146.83, 174.61, 196.00, 220.00, 261.63, 293.66, 349.23, 440.00];
-
-function ensure(){
-  if(ctx) return;
-  const AC = window.AudioContext || window.webkitAudioContext;
-  if(!AC) return;
-  ctx = new AC();
-  master = ctx.createGain();
-  master.gain.value = 0;
-  master.connect(ctx.destination);
-
-  const filt = ctx.createBiquadFilter();
-  filt.type = "lowpass"; filt.frequency.value = 620; filt.Q.value = .6;
-  filt.connect(master);
-  [73.42, 110.00, 146.83].forEach((f, i) => {
-    const o = ctx.createOscillator(), g = ctx.createGain();
-    o.type = "triangle"; o.frequency.value = f;
-    o.detune.value = (i - 1) * 6;
-    g.gain.value = .10 - i * .02;
-    o.connect(g); g.connect(filt); o.start();
-  });
-}
-function startAudio(){ /* stays silent until user opts in */ }
-
-function pluck(){
-  if(!on || !ctx) return;
-  const t = ctx.currentTime;
-  const o = ctx.createOscillator(), g = ctx.createGain();
-  o.type = "triangle";
-  o.frequency.value = NOTES[Math.floor(Math.random() * NOTES.length)];
-  g.gain.setValueAtTime(0, t);
-  g.gain.linearRampToValueAtTime(.16, t + .01);
-  g.gain.exponentialRampToValueAtTime(.0001, t + 2.4);
-  o.connect(g); g.connect(master);
-  o.start(t); o.stop(t + 2.5);
-}
-function chord(){
-  if(!on || !ctx) return;
-  [0, 2, 4, 6].forEach((n, i) => setTimeout(() => {
-    const t = ctx.currentTime;
-    const o = ctx.createOscillator(), g = ctx.createGain();
-    o.type = "sine"; o.frequency.value = NOTES[n] * 2;
-    g.gain.setValueAtTime(0, t);
-    g.gain.linearRampToValueAtTime(.10, t + .02);
-    g.gain.exponentialRampToValueAtTime(.0001, t + 3.4);
-    o.connect(g); g.connect(master);
-    o.start(t); o.stop(t + 3.5);
-  }, i * 260));
-}
-let ambTimer;
-function amble(){
-  ambTimer = setTimeout(() => { pluck(); amble(); }, 2600 + Math.random() * 4200);
-}
-$("#soundBtn").addEventListener("click", () => {
-  ensure();
-  if(!ctx) return;
-  on = !on;
-  if(ctx.state === "suspended") ctx.resume();
-  master.gain.linearRampToValueAtTime(on ? .5 : 0, ctx.currentTime + .8);
-  $("#soundBtn").textContent = on ? "Sound on" : "Sound off";
-  clearTimeout(ambTimer);
-  if(on) amble();
-});
-
-/* ---------- go ---------- */
-render();
-if(count() === ITEMS.length) toast("hamper is still full — open it");
 })();
 </script>
 </body>
