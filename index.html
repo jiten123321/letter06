@@ -100,8 +100,10 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .seam{
   position:absolute;top:0;bottom:0;left:var(--seam);width:1px;z-index:4;
   background:linear-gradient(180deg,transparent,rgba(34,30,46,.5) 18%,rgba(34,30,46,.5) 82%,transparent);
+  pointer-events:none;
 }
 .seam-grip{
+  pointer-events:auto;
   position:absolute;top:50%;left:50%;translate:-50% -50%;
   width:34px;height:34px;border-radius:50%;
   background:var(--card);border:1px solid rgba(34,30,46,.28);
