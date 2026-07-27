@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Dono — a boutique that only sells pairs</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&family=Karla:wght@300;400;500;600&family=Tiro+Devanagari+Hindi:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&family=Karla:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 /* ============ tokens ============ */
 :root{
@@ -37,7 +37,7 @@
 
   --f-display:"Fraunces",Georgia,serif;
   --f-body:"Karla",system-ui,sans-serif;
-  --f-deva:"Tiro Devanagari Hindi","Fraunces",serif;
+  --f-deva:"Fraunces",Georgia,serif;
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
@@ -345,7 +345,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
   <div class="stage">
     <div class="ring"><div class="ring-rot" id="ringRot"></div></div>
     <article class="letter" id="letter">
-      <div class="to">लाडू,</div>
+      <div class="to">Ladoo,</div>
       <div id="letterBody"></div>
       <div class="sign" id="letterSign"></div>
     </article>
@@ -477,53 +477,53 @@ ladoo: S(`<g class="hers" ${H}>
 
 /* ---------- catalogue ---------- */
 const ITEMS = [
- {id:"cups", art:"cups", pair:"coffee / चाय", name:"Cup No. 1 & No. 2",
-  desc:"एक ही ट्रे पे दो अलग दुनिया। तू ठंडी coffee भी गरम बताकर पी लेती है, मैं गरम चाय भी दो घंटे बाद पीता हूँ। हम दोनों ग़लत हैं, बस अलग-अलग तरीक़े से।",
-  price:"एक पुरानी बहस, जो आज तक ख़त्म नहीं हुई।"},
+ {id:"cups", art:"cups", pair:"coffee / tea", name:"Cup No. 1 & No. 2",
+  desc:"Two different worlds on the same tray. You drink cold coffee and swear it's still hot; I let hot tea go cold and drink it two hours later. We're both wrong — just in different ways.",
+  price:"One old argument, still not settled."},
 
- {id:"screen", art:"screen", pair:"reels / पन्ने", name:"The Screen & The Spine",
-  desc:"तू scroll करती है, मैं page पलटता हूँ। दोनों का काम एक ही है — रात को दो बजे तक जागना और subah बोलना कि नींद ही नहीं आई।",
-  price:"एक रात, जब दोनों जागते रहे।"},
+ {id:"screen", art:"screen", pair:"reels / pages", name:"The Screen & The Spine",
+  desc:"You scroll, I turn pages. Both do the same job — keep us up till two in the morning, then let us say we couldn't sleep.",
+  price:"One night we both stayed awake."},
 
- {id:"dream", art:"dream", pair:"dream / ख़्वाब", name:"Dream & Khwaab",
-  desc:"एक ही बादल, दो अलग आसमान। तेरे वाले में तारे हैं, मेरे वाले में चाँद। दिक़्क़त ये है कि दोनों एक साथ दिखते नहीं, फिर भी एक ही रात के हैं।",
-  price:"एक ही नींद, दो अलग सपने।"},
+ {id:"dream", art:"dream", pair:"dream / reverie", name:"Dream & Reverie",
+  desc:"One cloud, two different skies. Yours has the stars, mine has the moon. The trouble is you can't see them both at once — yet they belong to the same night.",
+  price:"One sleep, two different dreams."},
 
- {id:"kaajal", art:"kaajal", pair:"काजल / शाम", name:"Kaajal & Shaam",
-  desc:"तू आँख मलती है तो शाम हो जाती है, काजल लगाती है तो रात। मैंने घड़ी देखना कब का छोड़ दिया है।",
-  price:"एक शाम, जो हमेशा जल्दी ढल जाती है।"},
+ {id:"kaajal", art:"kaajal", pair:"kohl / dusk", name:"Kohl & Dusk",
+  desc:"When you rub your eyes it turns to evening; when you line them with kohl it turns to night. I gave up watching the clock long ago.",
+  price:"One evening that always fades too soon."},
 
- {id:"voice", art:"voice", pair:"कह देना / रह जाना", name:"Loud & Whisper",
-  desc:"तू जो सोचती है वो बोल देती है। मैं जो सोचता हूँ वो लिख देता हूँ, भेजता नहीं। इसलिए झगड़े में तू हमेशा तेज़ है और मैं हमेशा देर से।",
-  price:"एक बात, जो मैं वक़्त पे नहीं कह पाया।"},
+ {id:"voice", art:"voice", pair:"spoken / unspoken", name:"Loud & Whisper",
+  desc:"Whatever you think, you say. Whatever I think, I write down and never send. That's why in every fight you're always quick and I'm always late.",
+  price:"One thing I couldn't say in time."},
 
- {id:"jeet", art:"jeet", pair:"जीत / हार", name:"Jeet & Haar",
-  desc:"तू जीतने के लिए लड़ती है। मैं बस बात ख़त्म करने के लिए। सच बताऊँ तो हारने में मुझे कोई दिक़्क़त नहीं होती, अगर तू बाद में हँस दे।",
-  price:"एक झगड़ा जो तूने जीता, और मैंने भी।"},
+ {id:"jeet", art:"jeet", pair:"victory / surrender", name:"Victory & Surrender",
+  desc:"You fight to win. I only fight to end the fight. Honestly, I don't mind losing — as long as you laugh afterwards.",
+  price:"One fight you won, and so did I."},
 
  {id:"meme", art:"meme", pair:"sent / seen", name:"The 2 A.M. Meme",
-  desc:"तू कुछ नहीं कहती, बस एक meme भेज देती है। मुझे पता है उसका मतलब क्या है। ये हमारी अपनी भाषा है, dictionary में नहीं मिलेगी।",
-  price:"एक message, रात के दो बजे।"},
+  desc:"You don't say anything, you just send a meme. I know exactly what it means. It's our own language — you won't find it in any dictionary.",
+  price:"One message, at two in the morning."},
 
- {id:"mood", art:"mood", pair:"थाली / मुस्कान", name:"The Mood Fixer",
-  desc:"तेरा mood ख़राब होने का एक ही इलाज है और वो बात करना नहीं है। खाना खिला दो, दो निवाले के अंदर सब ठीक। पूरी दुनिया तुझे समझाने की कोशिश करती रहेगी, मैं बस plate लगा दूँगा।",
-  price:"एक थाली। बस इतना ही।"}
+ {id:"mood", art:"mood", pair:"plate / smile", name:"The Mood Fixer",
+  desc:"There's only one cure for your bad mood, and it isn't talking. Just feed you — two bites in, everything's fine. The whole world will keep trying to reason with you; I'll just fix you a plate.",
+  price:"One plate. That's all it takes."}
 ];
 
-const SECRET = {id:"ladoo", art:"ladoo", pair:"मिला हुआ / नहीं मिलेगा", name:"लड्डू",
-  desc:"ये दुकान में रखा तो है, पर shelf पे नहीं है। ये बिकता नहीं। ये पहले से किसी का है।",
-  price:"बिकाऊ नहीं।"};
+const SECRET = {id:"ladoo", art:"ladoo", pair:"already taken / never for sale", name:"Ladoo",
+  desc:"It's kept in the shop, but not on any shelf. It isn't for sale. It already belongs to someone.",
+  price:"Not for sale."};
 
 /* ---------- letter ---------- */
 const LETTER = [
- "ये पूरी दुकान एक ही बात के लिए बनी है।",
- "तू coffee पीती है, मैं चाय। तू screen पे रहती है, मैं किताब पे। तू साफ़ बोल देती है, मैं अंदर ही अंदर बोलता रहता हूँ। हर चीज़ में हम उल्टे हैं।",
- "और फिर भी।",
- "मुझे पता है जब तेरा mood ख़राब होता है तो तू कुछ कहती नहीं, बस चुप हो जाती है। और मुझे ये भी पता है कि उस वक़्त तुझे समझाने की ज़रूरत नहीं होती — तुझे खाना खिलाने की ज़रूरत होती है। दो निवाले के बाद तू ख़ुद ही हँसकर कुछ बोल देती है, जैसे कुछ हुआ ही न हो। ये दुनिया का सबसे आसान जादू है, और अच्छा लगता है कि ये सिर्फ़ मुझे आता है।",
- "इस दुकान में असल में कुछ बिकता नहीं। हर चीज़ की क़ीमत एक याद है, और वो तूने कब की चुका दी है।",
- "हम match नहीं करते। हम fit करते हैं। दोनों में फ़र्क़ है।"
+ "This whole shop was built to say just one thing.",
+ "You drink coffee, I drink tea. You live on a screen, I live in a book. You say things plainly, I keep saying them to myself. In every single thing, we're opposites.",
+ "And still.",
+ "I know that when you're in a bad mood you don't say anything, you just go quiet. And I also know that in those moments you don't need to be reasoned with — you need to be fed. Two bites in, you laugh and say something on your own, as if nothing ever happened. It's the easiest magic in the world, and I love that only I know how to do it.",
+ "Nothing here is really for sale. Everything costs one memory, and you paid that a long time ago.",
+ "We don't match. We fit. There's a difference between the two."
 ];
-const SIGN = "— तेरा वाला";
+const SIGN = "— your own";
 
 /* ---------- state ---------- */
 const KEY = "dono.hamper.v1";
@@ -709,7 +709,7 @@ let typing = false, done = false;
 
 function graphemes(str){
   if(typeof Intl !== "undefined" && Intl.Segmenter){
-    return [...new Intl.Segmenter("hi", {granularity:"grapheme"}).segment(str)].map(s => s.segment);
+    return [...new Intl.Segmenter("en", {granularity:"grapheme"}).segment(str)].map(s => s.segment);
   }
   return Array.from(str);
 }
