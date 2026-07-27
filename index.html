@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dono — a boutique that only sells pairs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&family=Karla:wght@300;400;500;600&family=Tiro+Devanagari+Hindi:ital@0;1&display=swap" rel="stylesheet">
+<style>
+/* ============ tokens ============ */
+:root{
+  /* her world — screen light */
+  --her-bg:#E4E9F7;
+  --her-bg-2:#CFD8F0;
+  --her-ink:#2E3A63;
+  --her-line:#7B8FD4;
+
+  /* his world — paper and chai */
+  --his-bg:#F0E5D3;
+  --his-bg-2:#E2D2B8;
+  --his-ink:#453322;
+  --his-line:#8C5A3C;
+
+  /* the boutique interior */
+  --room-cool:#EDEAF3;
+  --room-warm:#F4EADC;
+  --card:#FCFAF7;
+  --ink:#221E2E;
+  --ink-soft:#645C74;
+  --hair:#D9D2CB;
+  --accent:#7A3B52;
+  --accent-soft:#B98098;
+
+  --seam:50%;
+  --ring:150px;
+
+  --f-display:"Fraunces",Georgia,serif;
+  --f-body:"Karla",system-ui,sans-serif;
+  --f-deva:"Tiro Devanagari Hindi","Fraunces",serif;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--f-body);
+  color:var(--ink);
+  background:var(--room-cool);
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+
+.grain{
+  position:fixed;inset:0;pointer-events:none;z-index:900;opacity:.35;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+  mix-blend-mode:multiply;
+}
+
+/* ============ gate ============ */
+#gate{
+  position:relative;min-height:100vh;min-height:100svh;overflow:hidden;padding:28px 0;
+  display:flex;align-items:center;justify-content:center;
+  touch-action:none;cursor:ew-resize;
+}
+.gate-face{position:absolute;inset:0}
+.gate-face.her{background:linear-gradient(160deg,var(--her-bg) 0%,var(--her-bg-2) 100%)}
+.gate-face.his{background:linear-gradient(160deg,var(--his-bg) 0%,var(--his-bg-2) 100%);
+  clip-path:inset(0 0 0 var(--seam))}
+
+.gate-tex{position:absolute;inset:0;opacity:.5}
+.gate-tex.her{background-image:repeating-linear-gradient(90deg,transparent 0 3px,rgba(123,143,212,.14) 3px 4px)}
+.gate-tex.his{clip-path:inset(0 0 0 var(--seam));
+  background-image:repeating-linear-gradient(0deg,transparent 0 22px,rgba(140,90,60,.10) 22px 23px)}
+
+.gate-inner{position:relative;z-index:3;text-align:center;padding:0 20px;width:100%}
+.gate-eyebrow{
+  position:relative;font-size:11px;letter-spacing:.32em;text-transform:uppercase;
+  font-weight:500;margin-bottom:clamp(14px,3vh,26px);
+}
+.wordwrap{position:relative;display:block;line-height:.85}
+.word{
+  font-family:var(--f-display);font-weight:300;
+  font-size:clamp(56px,min(20vw,23vh),230px);
+  font-variation-settings:"SOFT" 40,"WONK" 1;
+  letter-spacing:-.02em;display:block;
+}
+.word.his{position:absolute;inset:0;clip-path:inset(0 0 0 var(--seam));color:var(--his-ink)}
+.word.her{position:absolute;inset:0;color:var(--her-ink);clip-path:inset(0 calc(100% - var(--seam)) 0 0)}
+.word.base{color:transparent}
+.word,.gate-face,.gate-tex,.gate-eyebrow,.gate-sub,.hint{pointer-events:none}
+.gate-sub{
+  position:relative;margin-top:clamp(16px,3.5vh,32px);
+  font-family:var(--f-display);font-style:italic;font-weight:300;
+  font-size:clamp(15px,3.6vw,21px);letter-spacing:.01em;
+}
+.gate-sub .h{color:var(--her-ink)} .gate-sub .s{color:var(--his-ink)}
+
+.seam{
+  position:absolute;top:0;bottom:0;left:var(--seam);width:1px;z-index:4;
+  background:linear-gradient(180deg,transparent,rgba(34,30,46,.5) 18%,rgba(34,30,46,.5) 82%,transparent);
+}
+.seam-grip{
+  position:absolute;top:50%;left:50%;translate:-50% -50%;
+  width:34px;height:34px;border-radius:50%;
+  background:var(--card);border:1px solid rgba(34,30,46,.28);
+  display:grid;place-items:center;cursor:ew-resize;
+  box-shadow:0 4px 18px rgba(34,30,46,.16);
+}
+.seam-grip::before{content:"";width:9px;height:9px;border-left:1px solid var(--ink);border-top:1px solid var(--ink);
+  rotate:-45deg;translate:2px 0;opacity:.65}
+.seam-grip::after{content:"";position:absolute;width:9px;height:9px;border-right:1px solid var(--ink);border-top:1px solid var(--ink);
+  rotate:45deg;translate:-2px 0;opacity:.65}
+
+.enter{
+  position:relative;z-index:6;pointer-events:auto;
+  margin-top:clamp(26px,6vh,52px);
+  font-size:12px;letter-spacing:.26em;text-transform:uppercase;font-weight:600;
+  padding:15px 32px;border:1px solid rgba(34,30,46,.35);border-radius:100px;
+  background:rgba(252,250,247,.72);backdrop-filter:blur(6px);
+  transition:background .35s,letter-spacing .35s;
+}
+.enter:hover{background:var(--card);letter-spacing:.3em}
+.hint{position:relative;margin-top:16px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;opacity:.5}
+
+/* ============ boutique ============ */
+#shop{display:none;min-height:100vh;min-height:100svh;
+  background:linear-gradient(112deg,var(--room-cool) 0%,var(--room-warm) 100%)}
+#shop.on{display:block}
+
+.top{
+  position:sticky;top:0;z-index:60;
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding:16px clamp(18px,5vw,56px);
+  background:rgba(250,247,242,.82);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--hair);
+}
+.mark{font-family:var(--f-display);font-size:22px;font-weight:400;font-variation-settings:"WONK" 1;letter-spacing:-.01em}
+.mark span{color:var(--accent)}
+.top-right{display:flex;align-items:center;gap:8px}
+.chip{
+  font-size:10px;letter-spacing:.2em;text-transform:uppercase;font-weight:600;
+  padding:9px 15px;border:1px solid var(--hair);border-radius:100px;white-space:nowrap;
+  transition:border-color .3s,background .3s;
+}
+.chip:hover{border-color:var(--accent);background:rgba(122,59,82,.05)}
+.chip.hamper{border-color:rgba(34,30,46,.3)}
+.chip.hamper.full{background:var(--accent);color:#FCFAF7;border-color:var(--accent)}
+.chip[disabled]{opacity:.35;cursor:default}
+
+.intro{padding:clamp(46px,10vh,96px) clamp(18px,5vw,56px) clamp(26px,5vh,44px);max-width:760px}
+.intro h1{
+  font-family:var(--f-display);font-weight:300;font-variation-settings:"SOFT" 30,"WONK" 1;
+  font-size:clamp(32px,6.4vw,58px);line-height:1.06;letter-spacing:-.02em;
+}
+.intro h1 em{font-style:italic;color:var(--accent)}
+.intro p{margin-top:18px;font-size:clamp(14px,2.6vw,16px);line-height:1.7;color:var(--ink-soft);max-width:46ch}
+
+.shelf{
+  display:grid;gap:1px;background:var(--hair);
+  border-top:1px solid var(--hair);border-bottom:1px solid var(--hair);
+  grid-template-columns:1fr;
+}
+@media(min-width:620px){.shelf{grid-template-columns:1fr 1fr}}
+@media(min-width:1040px){.shelf{grid-template-columns:1fr 1fr 1fr}}
+
+.item{
+  background:var(--card);padding:26px 22px 22px;text-align:left;
+  display:flex;flex-direction:column;gap:14px;position:relative;
+  transition:background .4s;
+}
+.item:hover,.item:focus-visible{background:#fff}
+.item .art{width:100%;height:auto;display:block}
+.item .art .hers{transition:translate .5s cubic-bezier(.22,1,.36,1)}
+.item .art .his{transition:translate .5s cubic-bezier(.22,1,.36,1)}
+.item:hover .art .hers{translate:5px 0}
+.item:hover .art .his{translate:-5px 0}
+.pairlabel{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);font-weight:600}
+.pairlabel.deva{text-transform:none;letter-spacing:.08em;font-family:var(--f-deva);font-size:12px}
+.itemname{font-family:var(--f-display);font-size:19px;font-weight:400;line-height:1.25;font-variation-settings:"WONK" 1}
+.mine{
+  position:absolute;top:14px;right:16px;font-size:9px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--accent);opacity:0;transition:opacity .35s;font-weight:700;
+}
+.item.owned .mine{opacity:1}
+.item.owned{background:#fff}
+.item.owned .art{opacity:.55}
+
+.footnote{padding:clamp(34px,7vh,64px) clamp(18px,5vw,56px);text-align:center;
+  font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft)}
+
+/* ============ modal ============ */
+#modal{
+  position:fixed;inset:0;z-index:200;display:none;
+  align-items:flex-end;justify-content:center;
+  background:rgba(34,30,46,.42);backdrop-filter:blur(3px);
+}
+#modal.on{display:flex}
+@media(min-width:700px){#modal{align-items:center}}
+.sheet{
+  background:var(--card);width:100%;max-width:860px;max-height:92svh;overflow:auto;
+  border-radius:20px 20px 0 0;padding:26px 24px 30px;position:relative;
+  animation:rise .45s cubic-bezier(.22,1,.36,1);
+}
+@media(min-width:700px){.sheet{border-radius:6px;padding:40px;display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:center}}
+@keyframes rise{from{translate:0 40px;opacity:0}to{translate:0 0;opacity:1}}
+.sheet-art{background:linear-gradient(140deg,var(--room-cool),var(--room-warm));border-radius:4px;padding:18px}
+.sheet-art svg{width:100%;height:auto;display:block}
+.sheet-body{padding-top:20px}
+@media(min-width:700px){.sheet-body{padding-top:0}}
+.sheet-body h2{font-family:var(--f-display);font-weight:300;font-size:clamp(26px,5vw,38px);
+  line-height:1.08;letter-spacing:-.02em;margin:10px 0 16px;font-variation-settings:"SOFT" 30,"WONK" 1}
+.sheet-desc{font-family:var(--f-deva);font-size:16px;line-height:1.85;color:#3b3547}
+.price{margin-top:22px;padding-top:18px;border-top:1px solid var(--hair)}
+.price .lbl{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--ink-soft);font-weight:600}
+.price .val{font-family:var(--f-deva);font-size:17px;margin-top:7px;color:var(--accent)}
+.add{
+  margin-top:24px;width:100%;padding:16px;border-radius:100px;background:var(--ink);color:#FCFAF7;
+  font-size:11px;letter-spacing:.24em;text-transform:uppercase;font-weight:600;transition:background .3s;
+}
+.add:hover{background:var(--accent)}
+.add.owned{background:transparent;color:var(--ink-soft);border:1px solid var(--hair)}
+.x{position:absolute;top:14px;right:16px;width:34px;height:34px;border-radius:50%;
+  display:grid;place-items:center;font-size:19px;line-height:1;color:var(--ink-soft);z-index:2}
+.x:hover{background:rgba(34,30,46,.07)}
+
+/* ============ checkout ============ */
+#final{
+  position:fixed;inset:0;z-index:300;display:none;overflow:auto;
+  background:linear-gradient(150deg,var(--her-bg) 0%,#F2ECE6 48%,var(--his-bg) 100%);
+}
+#final.on{display:block}
+.stage{min-height:100vh;min-height:100svh;display:grid;place-items:center;padding:56px 18px;position:relative}
+.ring{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}
+.ring-rot{position:relative;width:1px;height:1px;animation:spin 90s linear infinite}
+@keyframes spin{to{rotate:360deg}}
+.orb{position:absolute;width:64px;height:64px;margin:-32px;border-radius:50%;
+  background:rgba(252,250,247,.75);border:1px solid var(--hair);display:grid;place-items:center;
+  opacity:0;animation:pop .8s cubic-bezier(.22,1,.36,1) forwards}
+@keyframes pop{to{opacity:1}}
+.orb svg{width:44px;height:auto}
+.letter{
+  position:relative;z-index:5;background:rgba(252,250,247,.95);backdrop-filter:blur(8px);
+  border:1px solid var(--hair);border-radius:3px;max-width:560px;width:100%;
+  padding:clamp(28px,6vw,52px);box-shadow:0 30px 90px rgba(34,30,46,.16);
+  opacity:0;transition:opacity 1.2s ease;
+}
+.letter.on{opacity:1}
+.letter .to{font-family:var(--f-deva);font-size:clamp(24px,5.4vw,34px);color:var(--accent);margin-bottom:22px}
+.letter p{font-family:var(--f-deva);font-size:clamp(15px,3.4vw,17px);line-height:2;margin-bottom:18px;min-height:1em}
+.letter .sign{font-family:var(--f-deva);font-style:italic;font-size:clamp(16px,3.6vw,19px);
+  text-align:right;margin-top:28px;color:var(--accent)}
+.caret::after{content:"▍";color:var(--accent-soft);animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.skip{position:fixed;bottom:20px;left:50%;translate:-50% 0;z-index:10;
+  font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-soft);
+  padding:11px 20px;border:1px solid var(--hair);border-radius:100px;background:rgba(252,250,247,.9)}
+
+/* ============ toast ============ */
+#toast{
+  position:fixed;left:50%;bottom:26px;translate:-50% 20px;z-index:400;
+  background:var(--ink);color:#FCFAF7;padding:12px 22px;border-radius:100px;
+  font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  opacity:0;pointer-events:none;transition:opacity .35s,translate .35s;
+}
+#toast.on{opacity:1;translate:-50% 0}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+}
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<!-- ===================== GATE ===================== -->
+<section id="gate">
+  <div class="gate-face her"></div>
+  <div class="gate-tex her"></div>
+  <div class="gate-face his"></div>
+  <div class="gate-tex his"></div>
+
+  <div class="gate-inner">
+    <div class="gate-eyebrow"><span style="color:var(--her-ink)">est. </span><span style="color:var(--his-ink)">whenever it started</span></div>
+    <span class="wordwrap">
+      <span class="word base" aria-hidden="true">Dono</span>
+      <span class="word her" aria-hidden="true">Dono</span>
+      <span class="word his">Dono</span>
+    </span>
+    <p class="gate-sub"><span class="h">two of everything,</span> <span class="s">one of us</span></p>
+    <button class="enter" id="enterBtn">Enter the boutique</button>
+    <p class="hint" id="gateHint">drag the line ↔ &nbsp;·&nbsp; then tap Enter</p>
+  </div>
+
+  <div class="seam">
+    <div class="seam-grip" id="grip" role="slider" tabindex="0"
+         aria-label="Divide the two worlds" aria-valuemin="10" aria-valuemax="90" aria-valuenow="50"></div>
+  </div>
+</section>
+
+<!-- ===================== SHOP ===================== -->
+<main id="shop">
+  <header class="top">
+    <div class="mark">Dono<span>.</span></div>
+    <div class="top-right">
+      <button class="chip" id="soundBtn">Sound off</button>
+      <button class="chip hamper" id="hamperBtn">0 / 8 in hamper</button>
+    </div>
+  </header>
+
+  <section class="intro">
+    <h1>Everything here is sold <em>in pairs.</em></h1>
+    <p>Nothing in this shop works alone. Pick up all eight and the hamper opens.</p>
+  </section>
+
+  <div class="shelf" id="shelf"></div>
+
+  <p class="footnote">no returns · no exchanges · no other branch</p>
+</main>
+
+<!-- ===================== MODAL ===================== -->
+<div id="modal" role="dialog" aria-modal="true" aria-labelledby="mName">
+  <div class="sheet">
+    <button class="x" id="closeBtn" aria-label="Close">×</button>
+    <div class="sheet-art" id="mArt"></div>
+    <div class="sheet-body">
+      <div class="pairlabel deva" id="mPair"></div>
+      <h2 id="mName"></h2>
+      <div class="sheet-desc" id="mDesc"></div>
+      <div class="price">
+        <div class="lbl">Price</div>
+        <div class="val" id="mPrice"></div>
+      </div>
+      <button class="add" id="addBtn">Add to hamper</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== FINAL ===================== -->
+<div id="final">
+  <div class="stage">
+    <div class="ring"><div class="ring-rot" id="ringRot"></div></div>
+    <article class="letter" id="letter">
+      <div class="to">लाडू,</div>
+      <div id="letterBody"></div>
+      <div class="sign" id="letterSign"></div>
+    </article>
+  </div>
+  <button class="skip" id="skipBtn">show the whole letter</button>
+</div>
+
+<div id="toast"></div>
+
+<script>
+(function(){
+"use strict";
+const $ = s => document.querySelector(s);
+let RM = false;
+try{ RM = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches); }catch(e){}
+
+/* ---------- art ---------- */
+const S = (inner) => `<svg viewBox="0 0 240 150" class="art" xmlns="http://www.w3.org/2000/svg" fill="none"
+  stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7">
+  <line x1="120" y1="18" x2="120" y2="132" stroke="#D9D2CB" stroke-dasharray="2 6"/>${inner}</svg>`;
+const H = 'stroke="var(--her-line)"', I = 'stroke="var(--his-line)"';
+
+const ART = {
+cups: S(`<g class="hers" ${H}>
+  <path d="M42 48h44l-5 54a8 8 0 0 1-8 7H55a8 8 0 0 1-8-7z"/>
+  <rect x="39" y="40" width="50" height="9" rx="3"/>
+  <rect x="46" y="66" width="36" height="19" rx="2"/>
+  <path d="M53 33c0-5 6-5 6-10M70 33c0-5 6-5 6-10"/></g>
+ <g class="his" ${I}>
+  <path d="M156 62h40l-6 42a7 7 0 0 1-7 6h-14a7 7 0 0 1-7-6z"/>
+  <line x1="159" y1="80" x2="193" y2="80"/>
+  <path d="M164 50c0-6 6-6 6-12M182 50c0-6 6-6 6-12"/>
+  <path d="M148 116h56"/></g>`),
+
+screen: S(`<g class="hers" ${H}>
+  <rect x="56" y="26" width="48" height="88" rx="8"/>
+  <line x1="72" y1="34" x2="88" y2="34"/>
+  <line x1="65" y1="52" x2="95" y2="52"/><line x1="65" y1="62" x2="88" y2="62"/>
+  <line x1="65" y1="72" x2="95" y2="72"/><line x1="65" y1="82" x2="80" y2="82"/>
+  <circle cx="80" cy="99" r="6"/></g>
+ <g class="his" ${I}>
+  <path d="M136 46c14-8 24-8 34 0v54c-10-8-20-8-34 0z"/>
+  <path d="M204 46c-14-8-24-8-34 0v54c10-8 20-8 34 0z"/>
+  <line x1="170" y1="46" x2="170" y2="100"/>
+  <line x1="144" y1="60" x2="162" y2="56"/><line x1="144" y1="70" x2="162" y2="66"/>
+  <line x1="178" y1="56" x2="196" y2="60"/><line x1="178" y1="66" x2="196" y2="70"/></g>`),
+
+dream: S(`<g class="hers" ${H}>
+  <path d="M44 92a15 15 0 0 1 3-29 21 21 0 0 1 39-4 14 14 0 0 1 2 33z"/>
+  <path d="M60 34l2-6 2 6 6 2-6 2-2 6-2-6-6-2z"/>
+  <path d="M86 26l1.5-4 1.5 4 4 1.5-4 1.5-1.5 4-1.5-4-4-1.5z"/></g>
+ <g class="his" ${I}>
+  <path d="M154 92a15 15 0 0 1 3-29 21 21 0 0 1 39-4 14 14 0 0 1 2 33z"/>
+  <path d="M186 34a11 11 0 1 0-11-13 9 9 0 0 1 11 13z"/></g>`),
+
+kaajal: S(`<g class="hers" ${H}>
+  <path d="M46 104l8-8 34-34 9 9-34 34z"/>
+  <path d="M88 62l9 9 6-6a6.4 6.4 0 0 0-9-9z"/>
+  <path d="M46 104l3-11 8 8z"/>
+  <path d="M52 46c8-9 24-9 32 0-8 9-24 9-32 0z"/>
+  <circle cx="68" cy="46" r="4"/><path d="M84 46l9-4"/></g>
+ <g class="his" ${I}>
+  <line x1="140" y1="96" x2="208" y2="96"/>
+  <path d="M156 96a18 18 0 0 1 36 0"/>
+  <path d="M148 82l-6-4M200 82l6-4M174 70v-8"/>
+  <path d="M150 46c3-3 6 0 9-3M186 38c3-3 6 0 9-3"/></g>`),
+
+voice: S(`<g class="hers" ${H}>
+  <path d="M40 34h64a8 8 0 0 1 8 8v40a8 8 0 0 1-8 8H70l-18 16v-16h-12a8 8 0 0 1-8-8V42a8 8 0 0 1 8-8z"/>
+  <line x1="54" y1="52" x2="98" y2="52"/><line x1="54" y1="64" x2="86" y2="64"/></g>
+ <g class="his" ${I}>
+  <path d="M154 66h40a7 7 0 0 1 7 7v20a7 7 0 0 1-7 7h-22l-12 10v-10h-6a7 7 0 0 1-7-7V73a7 7 0 0 1 7-7z"/>
+  <circle cx="166" cy="83" r="1.6" fill="var(--his-line)"/>
+  <circle cx="174" cy="83" r="1.6" fill="var(--his-line)"/>
+  <circle cx="182" cy="83" r="1.6" fill="var(--his-line)"/></g>`),
+
+jeet: S(`<g class="hers" ${H}>
+  <path d="M56 30h36v18a18 18 0 0 1-36 0z"/>
+  <path d="M56 34H44a10 10 0 0 0 12 12M92 34h12a10 10 0 0 1-12 12"/>
+  <line x1="74" y1="66" x2="74" y2="84"/>
+  <path d="M60 100h28l-4-16H64z"/><line x1="54" y1="100" x2="94" y2="100"/></g>
+ <g class="his" ${I}>
+  <line x1="160" y1="30" x2="160" y2="108"/>
+  <path d="M160 34h42l-9 13 9 13h-42z"/>
+  <path d="M176 44c-3-4-9-1-9 3 0 4 6 7 9 10 3-3 9-6 9-10 0-4-6-7-9-3z"/>
+  <line x1="150" y1="108" x2="172" y2="108"/></g>`),
+
+meme: S(`<g class="hers" ${H}>
+  <rect x="50" y="24" width="50" height="88" rx="8"/>
+  <circle cx="66" cy="58" r="2.4" fill="var(--her-line)"/>
+  <circle cx="84" cy="58" r="2.4" fill="var(--her-line)"/>
+  <path d="M64 74c4 7 18 7 22 0"/>
+  <path d="M100 88l14 6-14 6"/>
+  <text x="75" y="105" text-anchor="middle" font-family="Karla,sans-serif" font-size="8"
+    fill="var(--her-line)" stroke="none" letter-spacing="1">2:14</text></g>
+ <g class="his" ${I}>
+  <rect x="146" y="24" width="50" height="88" rx="8"/>
+  <path d="M158 52h26M158 62h20M158 72h24"/>
+  <path d="M171 96c-3-4-9-1-9 3.5 0 4.5 6 7.5 9 10.5 3-3 9-6 9-10.5 0-4.5-6-7.5-9-3.5"/>
+  <path d="M200 40l7-4M202 52h8M200 64l7 4"/></g>`),
+
+mood: S(`<g class="hers" ${H}>
+  <ellipse cx="72" cy="82" rx="42" ry="16"/>
+  <ellipse cx="72" cy="76" rx="42" ry="16"/>
+  <circle cx="56" cy="70" r="11"/><path d="M48 68c5 4 11 4 16 0"/>
+  <ellipse cx="88" cy="72" rx="13" ry="7"/>
+  <path d="M80 72c3-4 13-4 16 0"/>
+  <path d="M62 52c0-5 5-5 5-10M84 50c0-5 5-5 5-10"/></g>
+ <g class="his" ${I}>
+  <path d="M144 60l10 20 10-6 10 22 12-38 12 12"/>
+  <circle cx="198" cy="70" r="3.2" fill="var(--his-line)"/>
+  <line x1="140" y1="98" x2="206" y2="98"/>
+  <path d="M152 116c10 10 32 10 42 0" stroke-width="2"/>
+  <circle cx="160" cy="108" r="1.8" fill="var(--his-line)"/>
+  <circle cx="186" cy="108" r="1.8" fill="var(--his-line)"/></g>`),
+
+ladoo: S(`<g class="hers" ${H}>
+  <circle cx="74" cy="72" r="28"/>
+  <circle cx="64" cy="64" r="2" fill="var(--her-line)"/><circle cx="82" cy="62" r="2" fill="var(--her-line)"/>
+  <circle cx="72" cy="76" r="2" fill="var(--her-line)"/><circle cx="86" cy="80" r="2" fill="var(--her-line)"/>
+  <circle cx="60" cy="80" r="2" fill="var(--her-line)"/>
+  <path d="M46 104h56M52 104l4-6h36l4 6"/></g>
+ <g class="his" ${I}>
+  <path d="M150 96c0-24 20-42 44-42" stroke-dasharray="3 5"/>
+  <path d="M186 44l3-8 3 8 8 3-8 3-3 8-3-8-8-3z"/>
+  <text x="172" y="118" text-anchor="middle" font-family="Fraunces,serif" font-size="13"
+    font-style="italic" fill="var(--his-line)" stroke="none">not for sale</text></g>`)
+};
+
+/* ---------- catalogue ---------- */
+const ITEMS = [
+ {id:"cups", art:"cups", pair:"coffee / चाय", name:"Cup No. 1 & No. 2",
+  desc:"एक ही ट्रे पे दो अलग दुनिया। तू ठंडी coffee भी गरम बताकर पी लेती है, मैं गरम चाय भी दो घंटे बाद पीता हूँ। हम दोनों ग़लत हैं, बस अलग-अलग तरीक़े से।",
+  price:"एक पुरानी बहस, जो आज तक ख़त्म नहीं हुई।"},
+
+ {id:"screen", art:"screen", pair:"reels / पन्ने", name:"The Screen & The Spine",
+  desc:"तू scroll करती है, मैं page पलटता हूँ। दोनों का काम एक ही है — रात को दो बजे तक जागना और subah बोलना कि नींद ही नहीं आई।",
+  price:"एक रात, जब दोनों जागते रहे।"},
+
+ {id:"dream", art:"dream", pair:"dream / ख़्वाब", name:"Dream & Khwaab",
+  desc:"एक ही बादल, दो अलग आसमान। तेरे वाले में तारे हैं, मेरे वाले में चाँद। दिक़्क़त ये है कि दोनों एक साथ दिखते नहीं, फिर भी एक ही रात के हैं।",
+  price:"एक ही नींद, दो अलग सपने।"},
+
+ {id:"kaajal", art:"kaajal", pair:"काजल / शाम", name:"Kaajal & Shaam",
+  desc:"तू आँख मलती है तो शाम हो जाती है, काजल लगाती है तो रात। मैंने घड़ी देखना कब का छोड़ दिया है।",
+  price:"एक शाम, जो हमेशा जल्दी ढल जाती है।"},
+
+ {id:"voice", art:"voice", pair:"कह देना / रह जाना", name:"Loud & Whisper",
+  desc:"तू जो सोचती है वो बोल देती है। मैं जो सोचता हूँ वो लिख देता हूँ, भेजता नहीं। इसलिए झगड़े में तू हमेशा तेज़ है और मैं हमेशा देर से।",
+  price:"एक बात, जो मैं वक़्त पे नहीं कह पाया।"},
+
+ {id:"jeet", art:"jeet", pair:"जीत / हार", name:"Jeet & Haar",
+  desc:"तू जीतने के लिए लड़ती है। मैं बस बात ख़त्म करने के लिए। सच बताऊँ तो हारने में मुझे कोई दिक़्क़त नहीं होती, अगर तू बाद में हँस दे।",
+  price:"एक झगड़ा जो तूने जीता, और मैंने भी।"},
+
+ {id:"meme", art:"meme", pair:"sent / seen", name:"The 2 A.M. Meme",
+  desc:"तू कुछ नहीं कहती, बस एक meme भेज देती है। मुझे पता है उसका मतलब क्या है। ये हमारी अपनी भाषा है, dictionary में नहीं मिलेगी।",
+  price:"एक message, रात के दो बजे।"},
+
+ {id:"mood", art:"mood", pair:"थाली / मुस्कान", name:"The Mood Fixer",
+  desc:"तेरा mood ख़राब होने का एक ही इलाज है और वो बात करना नहीं है। खाना खिला दो, दो निवाले के अंदर सब ठीक। पूरी दुनिया तुझे समझाने की कोशिश करती रहेगी, मैं बस plate लगा दूँगा।",
+  price:"एक थाली। बस इतना ही।"}
+];
+
+const SECRET = {id:"ladoo", art:"ladoo", pair:"मिला हुआ / नहीं मिलेगा", name:"लड्डू",
+  desc:"ये दुकान में रखा तो है, पर shelf पे नहीं है। ये बिकता नहीं। ये पहले से किसी का है।",
+  price:"बिकाऊ नहीं।"};
+
+/* ---------- letter ---------- */
+const LETTER = [
+ "ये पूरी दुकान एक ही बात के लिए बनी है।",
+ "तू coffee पीती है, मैं चाय। तू screen पे रहती है, मैं किताब पे। तू साफ़ बोल देती है, मैं अंदर ही अंदर बोलता रहता हूँ। हर चीज़ में हम उल्टे हैं।",
+ "और फिर भी।",
+ "मुझे पता है जब तेरा mood ख़राब होता है तो तू कुछ कहती नहीं, बस चुप हो जाती है। और मुझे ये भी पता है कि उस वक़्त तुझे समझाने की ज़रूरत नहीं होती — तुझे खाना खिलाने की ज़रूरत होती है। दो निवाले के बाद तू ख़ुद ही हँसकर कुछ बोल देती है, जैसे कुछ हुआ ही न हो। ये दुनिया का सबसे आसान जादू है, और अच्छा लगता है कि ये सिर्फ़ मुझे आता है।",
+ "इस दुकान में असल में कुछ बिकता नहीं। हर चीज़ की क़ीमत एक याद है, और वो तूने कब की चुका दी है।",
+ "हम match नहीं करते। हम fit करते हैं। दोनों में फ़र्क़ है।"
+];
+const SIGN = "— तेरा वाला";
+
+/* ---------- state ---------- */
+const KEY = "dono.hamper.v1";
+let owned = new Set();
+try{ const r = localStorage.getItem(KEY); if(r) owned = new Set(JSON.parse(r)); }catch(e){}
+const save = () => { try{ localStorage.setItem(KEY, JSON.stringify([...owned])); }catch(e){} };
+const inShelf = id => ITEMS.some(i => i.id === id);
+const count = () => [...owned].filter(inShelf).length;
+
+/* ---------- gate ---------- */
+const gate = $("#gate"), grip = $("#grip");
+let dragging = false, secretFound = owned.has("ladoo");
+
+function setSeam(pct){
+  pct = Math.max(10, Math.min(90, pct));
+  document.documentElement.style.setProperty("--seam", pct + "%");
+  grip.setAttribute("aria-valuenow", Math.round(pct));
+}
+function fromEvent(e){
+  const r = gate.getBoundingClientRect();
+  setSeam(((e.clientX - r.left) / r.width) * 100);
+}
+gate.addEventListener("pointerdown", e => {
+  if(e.target.closest(".enter")) return;
+  dragging = true;
+  try{ gate.setPointerCapture(e.pointerId); }catch(err){}
+  fromEvent(e);
+  $("#gateHint").style.opacity = ".15";
+});
+gate.addEventListener("pointermove", e => {
+  if(dragging || e.pointerType === "mouse") fromEvent(e);
+});
+gate.addEventListener("pointerup", () => dragging = false);
+gate.addEventListener("pointercancel", () => dragging = false);
+grip.addEventListener("keydown", e => {
+  const now = parseFloat(grip.getAttribute("aria-valuenow"));
+  if(e.key === "ArrowLeft"){ setSeam(now - 3); e.preventDefault(); }
+  if(e.key === "ArrowRight"){ setSeam(now + 3); e.preventDefault(); }
+});
+
+$("#enterBtn").addEventListener("click", () => {
+  gate.style.transition = "opacity .7s ease";
+  gate.style.opacity = "0";
+  setTimeout(() => {
+    gate.style.display = "none";
+    $("#shop").classList.add("on");
+    try{ window.scrollTo(0,0); }catch(err){}
+  }, RM ? 0 : 700);
+  startAudio();
+});
+
+/* ---------- shelf ---------- */
+const shelf = $("#shelf");
+function render(){
+  const list = secretFound ? ITEMS.concat([SECRET]) : ITEMS;
+  shelf.innerHTML = list.map(it => `
+    <button class="item ${owned.has(it.id) ? "owned" : ""}" data-id="${it.id}">
+      <span class="mine">in hamper</span>
+      ${ART[it.art]}
+      <span class="pairlabel deva">${it.pair}</span>
+      <span class="itemname">${it.name}</span>
+    </button>`).join("");
+  const n = count();
+  const hb = $("#hamperBtn");
+  hb.classList.toggle("full", n === ITEMS.length);
+  hb.textContent = n === ITEMS.length
+    ? "Open the hamper →"
+    : `${n} / ${ITEMS.length} in hamper`;
+}
+shelf.addEventListener("click", e => {
+  const b = e.target.closest(".item");
+  if(b) openModal(b.dataset.id);
+});
+
+/* ---------- modal ---------- */
+const modal = $("#modal");
+let current = null, lastFocus = null;
+
+function findItem(id){ return ITEMS.concat([SECRET]).find(i => i.id === id); }
+
+function openModal(id){
+  const it = findItem(id); if(!it) return;
+  current = it; lastFocus = document.activeElement;
+  $("#mArt").innerHTML = ART[it.art];
+  $("#mPair").textContent = it.pair;
+  $("#mName").textContent = it.name;
+  $("#mDesc").textContent = it.desc;
+  $("#mPrice").textContent = it.price;
+  syncAdd();
+  modal.classList.add("on");
+  document.body.style.overflow = "hidden";
+  $("#closeBtn").focus();
+}
+function closeModal(){
+  modal.classList.remove("on");
+  document.body.style.overflow = "";
+  if(lastFocus) lastFocus.focus();
+}
+function syncAdd(){
+  const b = $("#addBtn"), has = owned.has(current.id);
+  if(current.id === "ladoo"){
+    b.textContent = "Not for sale";
+    b.classList.add("owned"); b.disabled = true; return;
+  }
+  b.disabled = false;
+  b.textContent = has ? "Remove from hamper" : "Add to hamper";
+  b.classList.toggle("owned", has);
+}
+$("#addBtn").addEventListener("click", () => {
+  if(!current || current.id === "ladoo") return;
+  if(owned.has(current.id)){ owned.delete(current.id); }
+  else { owned.add(current.id); pluck(); }
+  save(); syncAdd(); render();
+  if(count() === ITEMS.length) toast("hamper is full — open it");
+});
+$("#closeBtn").addEventListener("click", closeModal);
+modal.addEventListener("click", e => { if(e.target === modal) closeModal(); });
+document.addEventListener("keydown", e => {
+  if(e.key === "Escape" && modal.classList.contains("on")) closeModal();
+});
+
+/* ---------- hamper ---------- */
+$("#hamperBtn").addEventListener("click", () => {
+  const n = count();
+  if(n < ITEMS.length){
+    toast(`${ITEMS.length - n} more to go`);
+    return;
+  }
+  openFinal();
+});
+
+/* ---------- secret word ---------- */
+let typed = "";
+document.addEventListener("keydown", e => {
+  if(e.key.length !== 1 || modal.classList.contains("on")) return;
+  typed = (typed + e.key.toLowerCase()).slice(-8);
+  if(!secretFound && (typed.includes("ladoo") || typed.includes("laddu"))){
+    secretFound = true; owned.add("ladoo"); save(); render();
+    toast("something was hidden in the back");
+    pluck(); setTimeout(pluck, 220);
+    setTimeout(() => {
+      const el = shelf.querySelector('[data-id="ladoo"]');
+      try{ if(el) el.scrollIntoView({behavior: RM ? "auto" : "smooth", block:"center"}); }catch(err){}
+    }, 400);
+  }
+});
+
+/* ---------- toast ---------- */
+let tTimer;
+function toast(msg){
+  const t = $("#toast");
+  t.textContent = msg; t.classList.add("on");
+  clearTimeout(tTimer);
+  tTimer = setTimeout(() => t.classList.remove("on"), 2600);
+}
+
+/* ---------- final ---------- */
+function openFinal(){
+  const f = $("#final");
+  f.classList.add("on");
+  document.body.style.overflow = "hidden";
+
+  const rot = $("#ringRot");
+  rot.innerHTML = "";
+  const R = Math.max(140, Math.min(330, Math.min(innerWidth, innerHeight) * .40));
+  ITEMS.forEach((it, i) => {
+    const a = (i / ITEMS.length) * Math.PI * 2 - Math.PI / 2;
+    const d = document.createElement("div");
+    d.className = "orb";
+    d.style.left = (Math.cos(a) * R) + "px";
+    d.style.top  = (Math.sin(a) * R) + "px";
+    d.style.animationDelay = (RM ? 0 : i * 0.09) + "s";
+    d.innerHTML = ART[it.art].replace('viewBox="0 0 240 150"','viewBox="30 18 180 114"');
+    rot.appendChild(d);
+  });
+
+  chord();
+  setTimeout(() => { $("#letter").classList.add("on"); type(); }, RM ? 0 : 1000);
+}
+
+const body = $("#letterBody"), signEl = $("#letterSign");
+let typing = false, done = false;
+
+function graphemes(str){
+  if(typeof Intl !== "undefined" && Intl.Segmenter){
+    return [...new Intl.Segmenter("hi", {granularity:"grapheme"}).segment(str)].map(s => s.segment);
+  }
+  return Array.from(str);
+}
+function showAll(){
+  typing = false; done = true;
+  body.innerHTML = LETTER.map(p => `<p>${p}</p>`).join("");
+  signEl.textContent = SIGN;
+  $("#skipBtn").style.display = "none";
+}
+async function type(){
+  if(RM){ showAll(); return; }
+  typing = true;
+  body.innerHTML = "";
+  for(const para of LETTER){
+    if(!typing) return;
+    const p = document.createElement("p");
+    p.className = "caret";
+    body.appendChild(p);
+    for(const g of graphemes(para)){
+      if(!typing) return;
+      p.textContent += g;
+      await sleep(g === " " ? 14 : 26);
+    }
+    p.classList.remove("caret");
+    await sleep(420);
+  }
+  if(!typing) return;
+  await sleep(500);
+  signEl.textContent = SIGN;
+  $("#skipBtn").style.display = "none";
+  done = true; typing = false;
+}
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+$("#skipBtn").addEventListener("click", showAll);
+
+/* ---------- audio ---------- */
+let ctx = null, master = null, on = false;
+const NOTES = [146.83, 174.61, 196.00, 220.00, 261.63, 293.66, 349.23, 440.00];
+
+function ensure(){
+  if(ctx) return;
+  const AC = window.AudioContext || window.webkitAudioContext;
+  if(!AC) return;
+  ctx = new AC();
+  master = ctx.createGain();
+  master.gain.value = 0;
+  master.connect(ctx.destination);
+
+  const filt = ctx.createBiquadFilter();
+  filt.type = "lowpass"; filt.frequency.value = 620; filt.Q.value = .6;
+  filt.connect(master);
+  [73.42, 110.00, 146.83].forEach((f, i) => {
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = "triangle"; o.frequency.value = f;
+    o.detune.value = (i - 1) * 6;
+    g.gain.value = .10 - i * .02;
+    o.connect(g); g.connect(filt); o.start();
+  });
+}
+function startAudio(){ /* stays silent until user opts in */ }
+
+function pluck(){
+  if(!on || !ctx) return;
+  const t = ctx.currentTime;
+  const o = ctx.createOscillator(), g = ctx.createGain();
+  o.type = "triangle";
+  o.frequency.value = NOTES[Math.floor(Math.random() * NOTES.length)];
+  g.gain.setValueAtTime(0, t);
+  g.gain.linearRampToValueAtTime(.16, t + .01);
+  g.gain.exponentialRampToValueAtTime(.0001, t + 2.4);
+  o.connect(g); g.connect(master);
+  o.start(t); o.stop(t + 2.5);
+}
+function chord(){
+  if(!on || !ctx) return;
+  [0, 2, 4, 6].forEach((n, i) => setTimeout(() => {
+    const t = ctx.currentTime;
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = "sine"; o.frequency.value = NOTES[n] * 2;
+    g.gain.setValueAtTime(0, t);
+    g.gain.linearRampToValueAtTime(.10, t + .02);
+    g.gain.exponentialRampToValueAtTime(.0001, t + 3.4);
+    o.connect(g); g.connect(master);
+    o.start(t); o.stop(t + 3.5);
+  }, i * 260));
+}
+let ambTimer;
+function amble(){
+  ambTimer = setTimeout(() => { pluck(); amble(); }, 2600 + Math.random() * 4200);
+}
+$("#soundBtn").addEventListener("click", () => {
+  ensure();
+  if(!ctx) return;
+  on = !on;
+  if(ctx.state === "suspended") ctx.resume();
+  master.gain.linearRampToValueAtTime(on ? .5 : 0, ctx.currentTime + .8);
+  $("#soundBtn").textContent = on ? "Sound on" : "Sound off";
+  clearTimeout(ambTimer);
+  if(on) amble();
+});
+
+/* ---------- go ---------- */
+render();
+if(count() === ITEMS.length) toast("hamper is still full — open it");
+})();
+</script>
+</body>
+</html>
