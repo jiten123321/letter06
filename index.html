@@ -605,7 +605,7 @@ glitter($("#glitGate"), RM ? 0 : 60);
 function techSVG(i){
   const S = 'stroke="var(--his-line)" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"';
   const F = 'fill="var(--his-line)"';
-  switch(i % 6){
+  switch(i % 10){
     case 0: // </>
       return '<svg viewBox="0 0 34 30" xmlns="http://www.w3.org/2000/svg" ' + S + '><path d="M11 7 L4 15 L11 23"/><path d="M23 7 L30 15 L23 23"/><path d="M19 5 L15 25"/></svg>';
     case 1: // gear
@@ -616,8 +616,16 @@ function techSVG(i){
       return '<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><text x="16" y="22" text-anchor="middle" font-family="monospace" font-size="16" font-weight="700" ' + F + '>10</text></svg>';
     case 4: // >_
       return '<svg viewBox="0 0 32 30" xmlns="http://www.w3.org/2000/svg" ' + S + '><path d="M8 9 L15 15 L8 21"/><path d="M17 22 L25 22"/></svg>';
-    default: // wifi
+    case 5: // wifi
       return '<svg viewBox="0 0 32 30" xmlns="http://www.w3.org/2000/svg" ' + S + '><path d="M5 12 a16 16 0 0 1 22 0"/><path d="M9 16.5 a10 10 0 0 1 14 0"/><path d="M12.5 21 a5 5 0 0 1 7 0"/><circle cx="16" cy="24.5" r="1.2" ' + F + ' stroke="none"/></svg>';
+    case 6: // dumbbell
+      return '<svg viewBox="0 0 34 24" xmlns="http://www.w3.org/2000/svg" ' + S + '><line x1="12" y1="12" x2="22" y2="12"/><rect x="7" y="6" width="4" height="12" rx="1.2"/><rect x="23" y="6" width="4" height="12" rx="1.2"/><rect x="3.5" y="8.5" width="3" height="7" rx="1"/><rect x="27.5" y="8.5" width="3" height="7" rx="1"/></svg>';
+    case 7: // kettlebell
+      return '<svg viewBox="0 0 30 32" xmlns="http://www.w3.org/2000/svg" ' + S + '><path d="M10 15 C10 8 20 8 20 15"/><circle cx="15" cy="21.5" r="8.5"/></svg>';
+    case 8: // barbell
+      return '<svg viewBox="0 0 36 24" xmlns="http://www.w3.org/2000/svg" ' + S + '><line x1="14" y1="12" x2="22" y2="12"/><rect x="10" y="5" width="3" height="14" rx="1"/><rect x="6.5" y="7.5" width="3" height="9" rx="1"/><rect x="3" y="9.5" width="2.4" height="5" rx="1"/><rect x="23" y="5" width="3" height="14" rx="1"/><rect x="26.5" y="7.5" width="3" height="9" rx="1"/><rect x="30.6" y="9.5" width="2.4" height="5" rx="1"/></svg>';
+    default: // water bottle
+      return '<svg viewBox="0 0 22 32" xmlns="http://www.w3.org/2000/svg" ' + S + '><rect x="6" y="8" width="10" height="21" rx="3.5"/><rect x="8.2" y="3" width="5.6" height="5" rx="1.2"/><line x1="6" y1="15" x2="16" y2="15"/></svg>';
   }
 }
 function notes(el, n){
@@ -637,7 +645,7 @@ function notes(el, n){
   }
   el.appendChild(frag);
 }
-notes($("#noteGate"), RM ? 0 : 12);
+notes($("#noteGate"), RM ? 0 : 16);
 
 /* ---------- gate seam ---------- */
 const gate = $("#gate"), grip = $("#grip");
